@@ -11,6 +11,12 @@ function div_toggle(div_id){
 }
 
 function add_course(){
+        var jsonHttp = null;
+	var name = document.getElementById("course_name").value;
+        jsonHttp = new XMLHttpRequest();
+        jsonHttp.open( "GET", "interface.py?query=add_course&name="+name, false );
+        jsonHttp.send( null );
+	load_courses()
 }
 
 function data_load(){
@@ -19,6 +25,16 @@ function data_load(){
 }
 
 function load_courses(){
+        var jsonHttp = null;
+        jsonHttp = new XMLHttpRequest();
+        jsonHttp.open( "GET", "interface.py?query=courses", false );
+        jsonHttp.send( null );
+        var myobject = JSON.parse(jsonHttp.responseText);
+        var text = "";
+        for(i=0;i<myobject.courses.length;i++){
+		text += "UUID=" + myobject.courses[i][0] + " " + myobject.courses[i][1] + "<br/>";
+        };
+        document.getElementById("courses_list").innerHTML = text;
 }
 
 function load_materials(){
