@@ -21,6 +21,14 @@ function add_course(){
   load_courses()
 }
 
+function delete_course(uuid){
+  var jsonHttp = null;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?query=delete_course&uuid="+uuid, false );
+  jsonHttp.send( null );
+  load_courses()
+}
+
 function data_load(){
   load_courses()
     load_materials()
@@ -34,7 +42,7 @@ function load_courses(){
   var myobject = JSON.parse(jsonHttp.responseText);
   var text = "";
   for(i=0;i<myobject.courses.length;i++){
-    text += "UUID=" + myobject.courses[i][0] + " " + myobject.courses[i][1] + "<br/>";
+    text += "<div>"+ myobject.courses[i][1] + "<button onClick=\"delete_course(\'"+ myobject.courses[i][0] + "\')\">Удалить</button></div>";
   };
   document.getElementById("courses_list").innerHTML = text;
 }

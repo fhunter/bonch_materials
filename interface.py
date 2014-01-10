@@ -38,6 +38,19 @@ else:
 		print_header()
 		print "Здесь должно быть удаление материалов"
 	if form["query"].value == "delete_course":
+		if "uuid" in form:
+			conn = sqlite3.connect("materials.sqlite")
+			cursor = conn.cursor()
+			t = form["uuid"].value
+			cursor.execute("delete from courses where uuid = ?", (t,))
+			conn.commit()
+			js=json.dumps({"error": 0, "courses": cursor.fetchall()})
+			conn.close()
+			print_header()
+			print js
+		else:
+			print_header()
+			print json.dumps({"error": 1 })
 		print_header()
 		print "Здесь должно быть удаление курсов"
 	if form["query"].value == "add_course":
