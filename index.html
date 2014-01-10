@@ -14,18 +14,17 @@
 	<h1>Система управления учебными материалами</h1>
       </div>
       <div id="menu">
-	<button>Список материалов</button>
-	<button>Добавить материалы</button>
+	<button onClick="div_toggle('material_list');">Список материалов</button>
+	<button onClick="div_toggle('material_add');">Добавить материалы</button>
       </div>
-      <div id="tabs">
-	<div id="material_list">
+      <div id="UI_elements">
+	<div id="material_list" class="UI_tab" style="display: inline">
 	  <h2>Учебные материалы, список</h2>
 	  <div id="material_list_lists">
 	  </div>
 	</div>
-	<div id="material_add">
+	<div id="material_add" class="UI_tab" style="display: none">
 	  <h2>Форма добавления материалов</h2>
-	  <div id="material_add_form">
 	    <form>
 	      Файл:
 	    </form>
