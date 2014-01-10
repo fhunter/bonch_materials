@@ -8,7 +8,7 @@
     <script type="text/javascript" src="interface.js">
     </script>
   </head>
-  <body>
+  <body onLoad="data_load();">
     <div id="container">
       <div id="header">
 	<h1>Система управления учебными материалами</h1>
@@ -16,6 +16,7 @@
       <div id="menu">
 	<button onClick="div_toggle('material_list');">Список материалов</button>
 	<button onClick="div_toggle('material_add');">Добавить материалы</button>
+	<button onClick="div_toggle('courses_admin');">Учебные курсы</button>
       </div>
       <div id="UI_elements">
 	<div id="material_list" class="UI_tab" style="display: inline">
@@ -28,7 +29,11 @@
 	    <form>
 	      Файл:
 	    </form>
-	  </div>
+	</div>
+	<div id="courses_admin" class="UI_tab" style="display: none">
+	  <h2>Управление списком курсов</h2>
+	  <form id="course_add_form" action="javascript:add_course()"><input id="course_name"></input><input type=submit value="Добавить"></input><button onClick="load_courses();">Обновить</button></form>
+	  <div id="courses_list"></div>
 	</div>
       </div>
     </div>

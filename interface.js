@@ -9,3 +9,17 @@ function div_toggle(div_id){
 	  }
 	}
 }
+
+function add_course(){
+}
+
+function data_load(){
+	load_courses()
+	load_materials()
+}
+
+function load_courses(){
+}
+
+function load_materials(){
+}
