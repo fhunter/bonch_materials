@@ -8,7 +8,7 @@ import sqlite3
 cgitb.enable()
 
 def print_header():
-	print "Content-type: text/javascript"
+	print "Content-type: text/javascript; charset=utf-8"
 	print ""
 
 form = cgi.FieldStorage()
@@ -51,14 +51,12 @@ else:
 		else:
 			print_header()
 			print json.dumps({"error": 1 })
-		print_header()
-		print "Здесь должно быть удаление курсов"
 	if form["query"].value == "add_course":
 		if "name" in form:
 			conn = sqlite3.connect("materials.sqlite")
 			cursor = conn.cursor()
 			t = form["name"].value
-			cursor.execute("insert into courses (uuid, name) select *, ? from next_uuid", (t,))
+			cursor.execute("insert into courses (uuid, name) select *, ? from next_uuid", (str(t).decode('utf-8'),))
 			conn.commit()
 			js=json.dumps({"error": 0, "courses": cursor.fetchall()})
 			conn.close()
