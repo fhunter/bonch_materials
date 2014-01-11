@@ -48,4 +48,15 @@ function load_courses(){
 }
 
 function load_materials(){
+  var jsonHttp = null;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?query=materials", false );
+  jsonHttp.send( null );
+  var myobject = JSON.parse(jsonHttp.responseText);
+  var text = "";
+  for(i=0;i<myobject.materials.length;i++){
+    text += "<div>"+ myobject.materials[i][0] + " - "+ myobject.materials[i][1] + "</div>";
+//    load_belongs();
+  };
+  document.getElementById("material_list_lists").innerHTML = text;
 }
