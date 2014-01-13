@@ -37,26 +37,43 @@ function add_study_form(){
 }
 
 function delete_material(uuid){
+  var jsonHttp = null;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?query=delete_material&uuid="+uuid, false );
+  jsonHttp.send( null );
+  load_materials()
 }
 
 function delete_author(uuid){
+  var jsonHttp = null;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?query=delete_author&uuid="+uuid, false );
+  jsonHttp.send( null );
+  load_authors()
 }
 
 function delete_speciality(uuid){
+  var jsonHttp = null;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?query=delete_speciality&uuid="+uuid, false );
+  jsonHttp.send( null );
+  load_specialities()
 }
 
 function delete_discipline(uuid){
+  var jsonHttp = null;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?query=delete_discipline&uuid="+uuid, false );
+  jsonHttp.send( null );
+  load_disciplines()
 }
 
 function delete_study_form(uuid){
-}
-
-function delete_course(uuid){
   var jsonHttp = null;
   jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=delete_course&uuid="+uuid, false );
+  jsonHttp.open( "GET", "interface.py?query=delete_study_form&uuid="+uuid, false );
   jsonHttp.send( null );
-  load_courses()
+  load_study_formst()
 }
 
 function data_load(){

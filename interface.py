@@ -89,6 +89,30 @@ else:
 		else:
 			print_header()
 			print json.dumps({"error": 1 })
+	if form["query"].value == "add_discipline":
+		print_header()
+		print "Здесь должна быть обработка дисциплины"
+	if form["query"].value == "delete_discipline":
+		print_header()
+		print "Здесь должна быть обработка удаления дисциплины"
+	if form["query"].value == "add_author":
+		print_header()
+		print "Здесь должна быть обработка автора"
+	if form["query"].value == "delete_author":
+		print_header()
+		print "Здесь должна быть обработка удаления автора"
+	if form["query"].value == "add_speciality":
+		print_header()
+		print "Здесь должна быть обработка специальности"
+	if form["query"].value == "delete_speciality":
+		print_header()
+		print "Здесь должна быть обработка удаления специальности"
+	if form["query"].value == "add_study_form":
+		print_header()
+		print "Здесь должна быть обработка формы обучения"
+	if form["query"].value == "delete_study_form":
+		print_header()
+		print "Здесь должна быть обработка удаления формы обучения"
 	if form["query"].value == "add_belongs":
 		print_header()
 		print "Здесь должна быть обработка принадлежности"
