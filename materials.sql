@@ -1,4 +1,4 @@
-PRAGMA foreign_keys=OFF;
+PRAGMA foreign_keys=ON;
 BEGIN TRANSACTION;
 CREATE TABLE authors ( id integer primary key asc autoincrement, uuid text unique not null, fio text not null);
 CREATE TABLE study_form ( id integer primary key asc autoincrement, uuid text unique not null, study_form text not null);
