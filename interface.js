@@ -73,7 +73,7 @@ function delete_study_form(uuid){
   jsonHttp = new XMLHttpRequest();
   jsonHttp.open( "GET", "interface.py?query=delete_study_form&uuid="+uuid, false );
   jsonHttp.send( null );
-  load_study_formst()
+  load_study_forms()
 }
 
 function data_load(){
@@ -106,7 +106,7 @@ function load_authors(){
   var myobject = JSON.parse(jsonHttp.responseText);
   var text = "";
   for(i=0;i<myobject.authors.length;i++){
-    text += "<div class=\"list_element\">"+ myobject.authors[i][1] + "<button onClick=\"javascript:delete_author(\"" + myobject.authors[i][0] + "\")\">Удалить</button></div>";
+    text += "<div class=\"list_element\">"+ myobject.authors[i][1] + "<button onClick=\"javascript:delete_author('" + myobject.authors[i][0] + "')\">Удалить</button></div>";
 //    load_belongs();
   };
   document.getElementById("author_list").innerHTML = text;
@@ -120,7 +120,7 @@ function load_specialities(){
   var myobject = JSON.parse(jsonHttp.responseText);
   var text = "";
   for(i=0;i<myobject.speciality.length;i++){
-    text += "<div class=\"list_element\">"+ myobject.speciality[i][1] +" = "+ myobject.speciality[i][2] + "<button onClick=\"javascript:delete_speciality(\"" + myobject.speciality[i][0] + "\")\">Удалить</button></div>";
+    text += "<div class=\"list_element\">"+ myobject.speciality[i][1] +" = "+ myobject.speciality[i][2] + "<button onClick=\"javascript:delete_speciality('" + myobject.speciality[i][0] + "')\">Удалить</button></div>";
 //    load_belongs();
   };
   document.getElementById("speciality_list").innerHTML = text;
@@ -134,7 +134,7 @@ function load_disciplines(){
   var myobject = JSON.parse(jsonHttp.responseText);
   var text = "";
   for(i=0;i<myobject.discipline.length;i++){
-    text += "<div class=\"list_element\">"+ myobject.discipline[i][1] +" = "+ myobject.discipline[i][2] + "<button onClick=\"javascript:delete_discipline(\"" + myobject.discipline[i][0] + "\")\">Удалить</button></div>";
+    text += "<div class=\"list_element\">"+ myobject.discipline[i][1] +" = "+ myobject.discipline[i][2] + "<button onClick=\"javascript:delete_discipline('" + myobject.discipline[i][0] + "')\">Удалить</button></div>";
 //    load_belongs();
   };
   document.getElementById("discipline_list").innerHTML = text;
@@ -148,7 +148,7 @@ function load_study_forms(){
   var myobject = JSON.parse(jsonHttp.responseText);
   var text = "";
   for(i=0;i<myobject.study_form.length;i++){
-    text += "<div class=\"list_element\">"+ myobject.study_form[i][1] + "<button onClick=\"javascript:delete_study_form(\"" + myobject.study_form[i][0] + "\")\">Удалить</button></div>";
+    text += "<div class=\"list_element\">"+ myobject.study_form[i][1] + "<button onClick=\"javascript:delete_study_form('" + myobject.study_form[i][0] + "')\">Удалить</button></div>";
 //    load_belongs();
   };
   document.getElementById("study_form_list").innerHTML = text;

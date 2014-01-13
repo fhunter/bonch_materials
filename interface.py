@@ -61,20 +61,6 @@ else:
 	if form["query"].value == "delete_material":
 		print_header()
 		print "Здесь должно быть удаление материалов"
-	if form["query"].value == "delete_course":
-		if "uuid" in form:
-			conn = sqlite3.connect("materials.sqlite")
-			cursor = conn.cursor()
-			t = form["uuid"].value
-			cursor.execute("delete from courses where uuid = ?", (t,))
-			conn.commit()
-			js=json.dumps({"error": 0, "courses": cursor.fetchall()})
-			conn.close()
-			print_header()
-			print js
-		else:
-			print_header()
-			print json.dumps({"error": 1 })
 	if form["query"].value == "add_course":
 		if "name" in form:
 			conn = sqlite3.connect("materials.sqlite")
@@ -93,26 +79,70 @@ else:
 		print_header()
 		print "Здесь должна быть обработка дисциплины"
 	if form["query"].value == "delete_discipline":
-		print_header()
-		print "Здесь должна быть обработка удаления дисциплины"
+		if "uuid" in form:
+			conn = sqlite3.connect("materials.sqlite")
+			cursor = conn.cursor()
+			t = form["uuid"].value
+			cursor.execute("delete from discipline where uuid = ?", (t,))
+			conn.commit()
+			js=json.dumps({"error": 0, "discipline": cursor.fetchall()})
+			conn.close()
+			print_header()
+			print js
+		else:
+			print_header()
+			print json.dumps({"error": 1 })
 	if form["query"].value == "add_author":
 		print_header()
 		print "Здесь должна быть обработка автора"
 	if form["query"].value == "delete_author":
-		print_header()
-		print "Здесь должна быть обработка удаления автора"
+		if "uuid" in form:
+			conn = sqlite3.connect("materials.sqlite")
+			cursor = conn.cursor()
+			t = form["uuid"].value
+			cursor.execute("delete from authors where uuid = ?", (t,))
+			conn.commit()
+			js=json.dumps({"error": 0, "authors": cursor.fetchall()})
+			conn.close()
+			print_header()
+			print js
+		else:
+			print_header()
+			print json.dumps({"error": 1 })
 	if form["query"].value == "add_speciality":
 		print_header()
 		print "Здесь должна быть обработка специальности"
 	if form["query"].value == "delete_speciality":
-		print_header()
-		print "Здесь должна быть обработка удаления специальности"
+		if "uuid" in form:
+			conn = sqlite3.connect("materials.sqlite")
+			cursor = conn.cursor()
+			t = form["uuid"].value
+			cursor.execute("delete from speciality where uuid = ?", (t,))
+			conn.commit()
+			js=json.dumps({"error": 0, "speciality": cursor.fetchall()})
+			conn.close()
+			print_header()
+			print js
+		else:
+			print_header()
+			print json.dumps({"error": 1 })
 	if form["query"].value == "add_study_form":
 		print_header()
 		print "Здесь должна быть обработка формы обучения"
 	if form["query"].value == "delete_study_form":
-		print_header()
-		print "Здесь должна быть обработка удаления формы обучения"
+		if "uuid" in form:
+			conn = sqlite3.connect("materials.sqlite")
+			cursor = conn.cursor()
+			t = form["uuid"].value
+			cursor.execute("delete from study_form where uuid = ?", (t,))
+			conn.commit()
+			js=json.dumps({"error": 0, "study_form": cursor.fetchall()})
+			conn.close()
+			print_header()
+			print js
+		else:
+			print_header()
+			print json.dumps({"error": 1 })
 	if form["query"].value == "add_belongs":
 		print_header()
 		print "Здесь должна быть обработка принадлежности"
