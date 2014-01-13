@@ -60,25 +60,11 @@ function delete_course(uuid){
 }
 
 function data_load(){
-//  load_courses()
   load_materials()
   load_authors()
   load_specialities()
   load_disciplines()
   load_study_forms()
-}
-
-function load_courses(){
-  var jsonHttp = null;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=courses", false );
-  jsonHttp.send( null );
-  var myobject = JSON.parse(jsonHttp.responseText);
-  var text = "";
-  for(i=0;i<myobject.courses.length;i++){
-    text += "<div>"+ myobject.courses[i][1] + "<button onClick=\"delete_course(\'"+ myobject.courses[i][0] + "\')\">Удалить</button></div>";
-  };
-  document.getElementById("courses_list").innerHTML = text;
 }
 
 function load_materials(){
@@ -96,13 +82,57 @@ function load_materials(){
 }
 
 function load_authors(){
+  var jsonHttp = null;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?query=authors", false );
+  jsonHttp.send( null );
+  var myobject = JSON.parse(jsonHttp.responseText);
+  var text = "";
+  for(i=0;i<myobject.authors.length;i++){
+    text += "<div class=\"list_element\">"+ myobject.authors[i][1] + "<button onClick=\"javascript:delete_author(\"" + myobject.authors[i][0] + "\")\">Удалить</button></div>";
+//    load_belongs();
+  };
+  document.getElementById("author_list").innerHTML = text;
 }
 
 function load_specialities(){
+  var jsonHttp = null;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?query=speciality", false );
+  jsonHttp.send( null );
+  var myobject = JSON.parse(jsonHttp.responseText);
+  var text = "";
+  for(i=0;i<myobject.speciality.length;i++){
+    text += "<div class=\"list_element\">"+ myobject.speciality[i][1] +" = "+ myobject.speciality[i][2] + "<button onClick=\"javascript:delete_speciality(\"" + myobject.speciality[i][0] + "\")\">Удалить</button></div>";
+//    load_belongs();
+  };
+  document.getElementById("speciality_list").innerHTML = text;
 }
 
 function load_disciplines(){
+  var jsonHttp = null;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?query=discipline", false );
+  jsonHttp.send( null );
+  var myobject = JSON.parse(jsonHttp.responseText);
+  var text = "";
+  for(i=0;i<myobject.discipline.length;i++){
+    text += "<div class=\"list_element\">"+ myobject.discipline[i][1] +" = "+ myobject.discipline[i][2] + "<button onClick=\"javascript:delete_discipline(\"" + myobject.discipline[i][0] + "\")\">Удалить</button></div>";
+//    load_belongs();
+  };
+  document.getElementById("discipline_list").innerHTML = text;
 }
 
 function load_study_forms(){
+  var jsonHttp = null;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?query=study_form", false );
+  jsonHttp.send( null );
+  var myobject = JSON.parse(jsonHttp.responseText);
+  var text = "";
+  for(i=0;i<myobject.study_form.length;i++){
+    text += "<div class=\"list_element\">"+ myobject.study_form[i][1] + "<button onClick=\"javascript:delete_study_form(\"" + myobject.study_form[i][0] + "\")\">Удалить</button></div>";
+//    load_belongs();
+  };
+  document.getElementById("study_form_list").innerHTML = text;
 }
