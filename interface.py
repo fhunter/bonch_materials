@@ -26,7 +26,7 @@ else:
 	if form["query"].value == "discipline":
 		conn = sqlite3.connect("materials.sqlite")
 		cursor = conn.cursor()
-		cursor.execute("select uuid, name from courses")
+		cursor.execute("select uuid, name from discipline")
 		js=json.dumps({"error": 0, "discipline": cursor.fetchall()})
 		conn.close()
 		print_header()
@@ -34,7 +34,7 @@ else:
 	if form["query"].value == "authors":
 		conn = sqlite3.connect("materials.sqlite")
 		cursor = conn.cursor()
-		cursor.execute("select uuid, fio from courses")
+		cursor.execute("select uuid, fio from authors")
 		js=json.dumps({"error": 0, "authors": cursor.fetchall()})
 		conn.close()
 		print_header()
