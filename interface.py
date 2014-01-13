@@ -18,7 +18,7 @@ else:
 	if form["query"].value == "materials":
 		conn = sqlite3.connect("materials.sqlite")
 		cursor = conn.cursor()
-		cursor.execute("select uuid, name from materials")
+		cursor.execute("select uuid, name,description,owner, upload_date, edit_date from materials")
 		js=json.dumps({"error": 0, "materials": cursor.fetchall()})
 		conn.close()
 		print_header()
