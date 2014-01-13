@@ -23,11 +23,35 @@ else:
 		conn.close()
 		print_header()
 		print js
-	if form["query"].value == "courses":
+	if form["query"].value == "discipline":
 		conn = sqlite3.connect("materials.sqlite")
 		cursor = conn.cursor()
 		cursor.execute("select uuid, name from courses")
-		js=json.dumps({"error": 0, "courses": cursor.fetchall()})
+		js=json.dumps({"error": 0, "discipline": cursor.fetchall()})
+		conn.close()
+		print_header()
+		print js
+	if form["query"].value == "authors":
+		conn = sqlite3.connect("materials.sqlite")
+		cursor = conn.cursor()
+		cursor.execute("select uuid, fio from courses")
+		js=json.dumps({"error": 0, "authors": cursor.fetchall()})
+		conn.close()
+		print_header()
+		print js
+	if form["query"].value == "speciality":
+		conn = sqlite3.connect("materials.sqlite")
+		cursor = conn.cursor()
+		cursor.execute("select uuid, code, name from speciality")
+		js=json.dumps({"error": 0, "speciality": cursor.fetchall()})
+		conn.close()
+		print_header()
+		print js
+	if form["query"].value == "study_form":
+		conn = sqlite3.connect("materials.sqlite")
+		cursor = conn.cursor()
+		cursor.execute("select uuid, study_form from study_form")
+		js=json.dumps({"error": 0, "study_form": cursor.fetchall()})
 		conn.close()
 		print_header()
 		print js
