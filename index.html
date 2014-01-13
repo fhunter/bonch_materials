@@ -14,33 +14,69 @@
 	<h1>Система управления учебными материалами</h1>
       </div>
       <div id="menu">
-	<button onClick="div_toggle('material_list');">Список материалов</button>
-	<button onClick="div_toggle('material_add');">Добавить материалы</button>
-	<button onClick="div_toggle('courses_admin');">Учебные курсы</button>
+	<button onClick="div_toggle('material_admin');">Материалы</button>
+	<button onClick="div_toggle('author_admin');">Авторы</button>
+	<button onClick="div_toggle('discipline_admin');">Дисциплины</button>
+	<button onClick="div_toggle('speciality_admin');">Специальности</button>
+	<button onClick="div_toggle('study_form_admin');">Формы обучения</button>
       </div>
       <div id="UI_elements">
-	<div id="material_list" class="UI_tab" style="display: inline">
+
+	<div id="material_admin" class="UI_tab" style="display: inline">
 	  <h2>Учебные материалы, список</h2>
+	  <form id="material_add_form" action="javascript:add_material()">
+	    <input id="author_name">
+	    <input type=submit value="Добавить">
+	  </form>
 	  <button onClick="load_materials();">Обновить</button>
-	  <div id="material_list_lists" class="UI_list">
+	  <div id="material_list" class="UI_list">
 	  </div>
 	</div>
-	<div id="material_add" class="UI_tab" style="display: none">
-	  <h2>Форма добавления материалов</h2>
-	  <form>
-	    Файл:
+
+	<div id="author_admin" class="UI_tab" style="display: none">
+	  <h2>Управление списком авторов</h2>
+	  <form id="author_add_form" action="javascript:add_author()">
+	    <input id="author_name">
+	    <input type=submit value="Добавить">
 	  </form>
+	  <button onClick="load_authors();">Обновить</button>
+	  <div id="author_list" class="UI_list">
+	  </div>
 	</div>
-	<div id="courses_admin" class="UI_tab" style="display: none">
-	  <h2>Управление списком курсов</h2>
-	  <form id="course_add_form" action="javascript:add_course()">
+
+	<div id="discipline_admin" class="UI_tab" style="display: none">
+	  <h2>Управление списком дисциплин</h2>
+	  <form id="course_add_form" action="javascript:add_discipline()">
 	    <input id="course_name">
 	    <input type=submit value="Добавить">
 	  </form>
-	  <button onClick="load_courses();">Обновить</button>
-	  <div id="courses_list" class="UI_list">
+	  <button onClick="load_disciplines();">Обновить</button>
+	  <div id="discipline_list" class="UI_list">
 	  </div>
 	</div>
+
+	<div id="speciality_admin" class="UI_tab" style="display: none">
+	  <h2>Управление списком специальностей</h2>
+	  <form id="course_add_form" action="javascript:add_speciality()">
+	    <input id="course_name">
+	    <input type=submit value="Добавить">
+	  </form>
+	  <button onClick="load_specialities();">Обновить</button>
+	  <div id="speciality_list" class="UI_list">
+	  </div>
+	</div>
+
+	<div id="study_form_admin" class="UI_tab" style="display: none">
+	  <h2>Управление списком форм обучения</h2>
+	  <form id="study_form_add_form" action="javascript:add_study_form()">
+	    <input id="course_name">
+	    <input type=submit value="Добавить">
+	  </form>
+	  <button onClick="load_study_forms();">Обновить</button>
+	  <div id="study_form_list" class="UI_list">
+	  </div>
+	</div>
+
       </div>
     </div>
   </body>

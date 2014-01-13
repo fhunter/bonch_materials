@@ -21,6 +21,36 @@ function add_course(){
   load_courses()
 }
 
+function add_material(){
+}
+
+function add_author(){
+}
+
+function add_speciality(){
+}
+
+function add_discipline(){
+}
+
+function add_study_form(){
+}
+
+function delete_material(uuid){
+}
+
+function delete_author(uuid){
+}
+
+function delete_speciality(uuid){
+}
+
+function delete_discipline(uuid){
+}
+
+function delete_study_form(uuid){
+}
+
 function delete_course(uuid){
   var jsonHttp = null;
   jsonHttp = new XMLHttpRequest();
@@ -30,8 +60,12 @@ function delete_course(uuid){
 }
 
 function data_load(){
-  load_courses()
-    load_materials()
+//  load_courses()
+  load_materials()
+  load_authors()
+  load_specialities()
+  load_disciplines()
+  load_study_forms()
 }
 
 function load_courses(){
@@ -58,5 +92,17 @@ function load_materials(){
     text += "<div>"+ myobject.materials[i][0] + " - "+ myobject.materials[i][1] + "</div>";
 //    load_belongs();
   };
-  document.getElementById("material_list_lists").innerHTML = text;
+  document.getElementById("material_list").innerHTML = text;
+}
+
+function load_authors(){
+}
+
+function load_specialities(){
+}
+
+function load_disciplines(){
+}
+
+function load_study_forms(){
 }
