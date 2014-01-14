@@ -25,6 +25,12 @@ function add_material(){
 }
 
 function add_author(){
+  var jsonHttp = null;
+  var name = document.getElementById("authors_name").value;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?query=add_author&fio="+name, false );
+  jsonHttp.send( null );
+  load_authors()
 }
 
 function add_speciality(){

@@ -109,8 +109,19 @@ else:
 			print_header()
 			print json.dumps({"error": 1 })
 	if form["query"].value == "add_author":
-		print_header()
-		print "Здесь должна быть обработка автора"
+		if "fio" in form:
+			conn = sqlite3.connect("materials.sqlite")
+			cursor = conn.cursor()
+			t = form["fio"].value
+			cursor.execute("insert into authors (uuid, fio) select *, ? from next_uuid", (str(t).decode('utf-8'),))
+			conn.commit()
+			js=json.dumps({"error": 0, "authors": cursor.fetchall()})
+			conn.close()
+			print_header()
+			print js
+		else:
+			print_header()
+			print json.dumps({"error": 1 })
 	if form["query"].value == "delete_author":
 		if "uuid" in form:
 			conn = sqlite3.connect("materials.sqlite")
