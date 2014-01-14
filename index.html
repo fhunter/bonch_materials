@@ -46,8 +46,12 @@
 
 	<div id="discipline_admin" class="UI_tab" style="display: none">
 	  <h2>Управление списком дисциплин</h2>
-	  <form id="course_add_form" action="javascript:add_discipline()">
-	    <input id="course_name">
+	  <form id="discipline_add_form" action="javascript:add_discipline()">
+	    Название:<input id="discipline_name"><br>
+	    Семестр:<input id="discipline_semester"><br>
+	    Описание:<br>
+	    <textarea id="discipline_description"></textarea>
+	    <br>
 	    <input type=submit value="Добавить">
 	  </form>
 	  <button onClick="load_disciplines();">Обновить</button>
