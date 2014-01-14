@@ -34,6 +34,12 @@ function add_discipline(){
 }
 
 function add_study_form(){
+  var jsonHttp = null;
+  var name = document.getElementById("study_form_name").value;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?query=add_study_form&name="+name, false );
+  jsonHttp.send( null );
+  load_study_forms()
 }
 
 function delete_material(uuid){
