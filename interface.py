@@ -42,7 +42,7 @@ else:
 	if form["query"].value == "speciality":
 		conn = sqlite3.connect("materials.sqlite")
 		cursor = conn.cursor()
-		cursor.execute("select uuid, code, name from speciality")
+		cursor.execute("select uuid, code, name, description from speciality")
 		js=json.dumps({"error": 0, "speciality": cursor.fetchall()})
 		conn.close()
 		print_header()
@@ -110,8 +110,24 @@ else:
 			print_header()
 			print json.dumps({"error": 1 })
 	if form["query"].value == "add_speciality":
-		print_header()
-		print "Здесь должна быть обработка специальности"
+		if "name" in form and "code" in form:
+			conn = sqlite3.connect("materials.sqlite")
+			cursor = conn.cursor()
+			t1 = form["name"].value
+			t2 = form["code"].value
+			if "desc" in form:
+				t3 = form["desc"].value
+			else:
+				t3 = ""
+			cursor.execute("insert into speciality (uuid, name, code, description) select *, ?, ?, ? from next_uuid", (str(t1).decode('utf-8'),str(t2).decode('utf-8'),str(t3).decode('utf-8'),))
+			conn.commit()
+			js=json.dumps({"error": 0, "study_form": cursor.fetchall()})
+			conn.close()
+			print_header()
+			print js
+		else:
+			print_header()
+			print json.dumps({"error": 1 })
 	if form["query"].value == "delete_speciality":
 		if "uuid" in form:
 			conn = sqlite3.connect("materials.sqlite")

@@ -58,7 +58,10 @@
 	<div id="speciality_admin" class="UI_tab" style="display: none">
 	  <h2>Управление списком специальностей</h2>
 	  <form id="course_add_form" action="javascript:add_speciality()">
-	    <input id="course_name">
+	    Шифр:<input id="speciality_code"><br>
+	    Название:<input id="speciality_name"><br>
+	    Описание<br>
+	    <textarea id="speciality_description"></textarea><br>
 	    <input type=submit value="Добавить">
 	  </form>
 	  <button onClick="load_specialities();">Обновить</button>

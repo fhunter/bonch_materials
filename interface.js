@@ -28,6 +28,14 @@ function add_author(){
 }
 
 function add_speciality(){
+  var jsonHttp = null;
+  var name = document.getElementById("speciality_name").value;
+  var code = document.getElementById("speciality_code").value;
+  var desc = document.getElementById("speciality_description").value;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?query=add_speciality&name="+name+"&code="+code+"&desc="+desc, false );
+  jsonHttp.send( null );
+  load_specialities()
 }
 
 function add_discipline(){
@@ -126,7 +134,7 @@ function load_specialities(){
   var myobject = JSON.parse(jsonHttp.responseText);
   var text = "";
   for(i=0;i<myobject.speciality.length;i++){
-    text += "<div class=\"list_element\">"+ myobject.speciality[i][1] +" = "+ myobject.speciality[i][2] + "<button onClick=\"javascript:delete_speciality('" + myobject.speciality[i][0] + "')\">Удалить</button></div>";
+    text += "<div class=\"list_element\">"+ myobject.speciality[i][1] +" = "+ myobject.speciality[i][2] + " = " + myobject.speciality[i][3] + "<button onClick=\"javascript:delete_speciality('" + myobject.speciality[i][0] + "')\">Удалить</button></div>";
 //    load_belongs();
   };
   document.getElementById("speciality_list").innerHTML = text;
