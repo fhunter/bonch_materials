@@ -61,20 +61,6 @@ else:
 	if form["query"].value == "delete_material":
 		print_header()
 		print "Здесь должно быть удаление материалов"
-	if form["query"].value == "add_course":
-		if "name" in form:
-			conn = sqlite3.connect("materials.sqlite")
-			cursor = conn.cursor()
-			t = form["name"].value
-			cursor.execute("insert into courses (uuid, name) select *, ? from next_uuid", (str(t).decode('utf-8'),))
-			conn.commit()
-			js=json.dumps({"error": 0, "courses": cursor.fetchall()})
-			conn.close()
-			print_header()
-			print js
-		else:
-			print_header()
-			print json.dumps({"error": 1 })
 	if form["query"].value == "add_discipline":
 		if "name" in form and "sem" in form:
 			conn = sqlite3.connect("materials.sqlite")

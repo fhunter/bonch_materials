@@ -12,15 +12,6 @@ function div_toggle(div_id){
   }
 }
 
-function add_course(){
-  var jsonHttp = null;
-  var name = document.getElementById("course_name").value;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=add_course&name="+name, false );
-  jsonHttp.send( null );
-  load_courses()
-}
-
 function add_material(){
 }
 
