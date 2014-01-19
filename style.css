@@ -12,6 +12,12 @@ width: 900px;
 height: 1000px;
 }
 
+.list_element {
+  padding: 1px;
+  margin: 1px;
+  border: 1px solid red;
+}
+
 #header {
 background: #838283;
 height: 50px;
