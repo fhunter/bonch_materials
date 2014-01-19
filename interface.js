@@ -111,7 +111,7 @@ function load_materials(){
   var myobject = JSON.parse(jsonHttp.responseText);
   var text = "";
   for(i=0;i<myobject.materials.length;i++){
-    text += "<div>"+ myobject.materials[i][0] + " - "+ myobject.materials[i][1] + " - " + myobject.materials[i][2] + " - " + myobject.materials[i][3] + " - " + myobject.materials[i][4] + " - " + myobject.materials[i][5] + "</div>";
+    text += "<div class=\"list_element\">" + myobject.materials[i][1] + " - " + myobject.materials[i][2] + " - " + myobject.materials[i][3] + " - " + myobject.materials[i][4] + " - " + myobject.materials[i][5] + "<button onClick=\"javascript:delete_material('" + myobject.materials[i][0] + "')\">Удалить</button></div>";
 //    load_belongs();
   };
   document.getElementById("material_list").innerHTML = text;
