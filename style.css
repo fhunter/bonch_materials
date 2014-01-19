@@ -16,6 +16,7 @@ height: 1000px;
   padding: 1px;
   margin: 1px;
   border: 1px solid red;
+  border-radius: 6px;
 }
 
 #header {
