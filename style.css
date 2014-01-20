@@ -12,12 +12,36 @@ width: 900px;
 height: 1000px;
 }
 
+div {
+   border: 1px dashed black;
+}
+
+.UI_tab {
+  position: relative;
+  width: inherit;
+}
+
 .list_element {
   padding: 1px;
   margin: 1px;
   border: 1px solid red;
   border-radius: 6px;
 }
+
+.refresh_button {
+  text-align: right;
+}
+
+.delete_button {
+  text-align: right;
+}
+
+.field_name {
+}
+
+.field_value {
+}
+
 
 #header {
 background: #838283;
