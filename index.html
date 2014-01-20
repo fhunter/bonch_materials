@@ -24,28 +24,37 @@
 
 	<div id="material_admin" class="UI_tab" style="display: inline">
 	  <h2>Учебные материалы, список</h2>
+	  <div class="add_form">
 	  <form id="material_add_form" action="javascript:add_material()">
 	    <input id="material_name">
 	    <input type=submit value="Добавить">
 	  </form>
+	  </div>
+	  <div class="refresh_button">
 	  <button onClick="load_materials();">Обновить</button>
+	  </div>
 	  <div id="material_list" class="UI_list">
 	  </div>
 	</div>
 
 	<div id="author_admin" class="UI_tab" style="display: none">
 	  <h2>Управление списком авторов</h2>
+	  <div class="add_form">
 	  <form id="author_add_form" action="javascript:add_author()">
 	    <input id="authors_name">
 	    <input type=submit value="Добавить">
 	  </form>
+	  </div>
+	  <div class="refresh_button">
 	  <button onClick="load_authors();">Обновить</button>
+	  </div>
 	  <div id="author_list" class="UI_list">
 	  </div>
 	</div>
 
 	<div id="discipline_admin" class="UI_tab" style="display: none">
 	  <h2>Управление списком дисциплин</h2>
+	  <div class="add_form">
 	  <form id="discipline_add_form" action="javascript:add_discipline()">
 	    Название:<input id="discipline_name"><br>
 	    Семестр:<input id="discipline_semester"><br>
@@ -54,13 +63,17 @@
 	    <br>
 	    <input type=submit value="Добавить">
 	  </form>
+	  </div>
+	  <div class="refresh_button">
 	  <button onClick="load_disciplines();">Обновить</button>
+	  </div>
 	  <div id="discipline_list" class="UI_list">
 	  </div>
 	</div>
 
 	<div id="speciality_admin" class="UI_tab" style="display: none">
 	  <h2>Управление списком специальностей</h2>
+	  <div class="add_form">
 	  <form id="speciality_add_form" action="javascript:add_speciality()">
 	    Шифр:<input id="speciality_code"><br>
 	    Название:<input id="speciality_name"><br>
@@ -68,18 +81,25 @@
 	    <textarea id="speciality_description"></textarea><br>
 	    <input type=submit value="Добавить">
 	  </form>
+	  </div>
+	  <div class="refresh_button">
 	  <button onClick="load_specialities();">Обновить</button>
+	  </div>
 	  <div id="speciality_list" class="UI_list">
 	  </div>
 	</div>
 
 	<div id="study_form_admin" class="UI_tab" style="display: none">
 	  <h2>Управление списком форм обучения</h2>
+	  <div class="add_form">
 	  <form id="study_form_add_form" action="javascript:add_study_form()">
 	    <input id="study_form_name">
 	    <input type=submit value="Добавить">
 	  </form>
+	  </div>
+	  <div class="refresh_button">
 	  <button onClick="load_study_forms();">Обновить</button>
+	  </div>
 	  <div id="study_form_list" class="UI_list">
 	  </div>
 	</div>
