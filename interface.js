@@ -131,6 +131,8 @@ function load_materials(){
     text += "<tr>";
     text += "<td class=field_name>Дата заливки</td>";
     text += "<td class=field_value>" + myobject.materials[i][4] + "</td>";
+    text += "</tr>";
+    text += "<tr>";
     text += "<td class=field_name>Дата редактирования</td>";
     if(myobject.materials[i][5]==null){
       text += "<td class=field_value>" + "Никогда" + "</td>";
@@ -142,7 +144,7 @@ function load_materials(){
     text += "<td class=field_name>Заливал</td>";
     text += "<td class=field_value>" + myobject.materials[i][3] + "</td>";
     text += "</tr>";
-    text += "<tr><td class=field_name colspan=2>Описание</td></tr>";
+    text += "<tr><td class=field_name>Описание</td></tr>";
     text += "<tr><td class=field_value colspan=2>" + myobject.materials[i][2] + "</td></tr>";
     text += "</table>";
     text += insert_delete_btn(myobject.materials[i][0], "delete_material");
@@ -174,10 +176,12 @@ function load_specialities(){
     text += "<table><tr>";
     text += "<td class=field_name>Шифр</td>";
     text += "<td class=field_value>" + myobject.speciality[i][1] + "</td>";
+    text += "</tr>";
+    text += "<tr>";
     text += "<td class=field_name>Название</td>";
     text += "<td class=field_value>"+ myobject.speciality[i][2] + "</td>";
     text += "</tr>";
-    text += "<tr><td colspan=2 class=field_name>Описание</td></tr>";
+    text += "<tr><td class=field_name>Описание</td></tr>";
     text += "<tr><td colspan=2 class=field_value>" + myobject.speciality[i][3] + "</td></tr>";
     text += "</table>";
     text += insert_delete_btn( myobject.speciality[i][0], "delete_speciality" );
@@ -194,10 +198,12 @@ function load_disciplines(){
     text += "<table><tr>";
     text += "<td class=field_name>Название</td>"
     text += "<td class=field_value>" + myobject.discipline[i][1] + "</td>";
+    text += "</tr>";
+    text += "<tr>";
     text += "<td class=field_name>Семестр</td>";
     text += "<td class=field_value>"+ myobject.discipline[i][2] + "</td>";
     text += "</tr>";
-    text += "<tr><td class=field_name colspan=2>Описание</td></tr>";
+    text += "<tr><td class=field_name>Описание</td></tr>";
     text += "<tr><td class=field_value colspan=2>" + myobject.discipline[i][3] + "</td></tr>";
     text += "</table>";
     text += insert_delete_btn( myobject.discipline[i][0], "delete_discipline" );
