@@ -111,7 +111,29 @@ function load_materials(){
   var myobject = JSON.parse(jsonHttp.responseText);
   var text = "";
   for(i=0;i<myobject.materials.length;i++){
-    text += "<div class=\"list_element\">" + myobject.materials[i][1] + " - " + myobject.materials[i][2] + " - " + myobject.materials[i][3] + " - " + myobject.materials[i][4] + " - " + myobject.materials[i][5] + "<div class=\"delete_button\"><button onClick=\"javascript:delete_material('" + myobject.materials[i][0] + "')\">Удалить</button></div></div>";
+    text += "<div class=\"list_element\">";
+    text += "<table><tr>";
+    text += "<td class=field_name>Название</td>";
+    text += "<td class=field_value>" + myobject.materials[i][1] + "</td>";
+    text += "</tr>";
+    text += "<tr>";
+    text += "<td class=field_name>Дата заливки</td>";
+    text += "<td class=field_value>" + myobject.materials[i][4] + "</td>";
+    text += "<td class=field_name>Дата редактирования</td>";
+    if(myobject.materials[i][5]==null){
+      text += "<td class=field_value>" + "Никогда" + "</td>";
+    }else{
+      text += "<td class=field_value>" + myobject.materials[i][5] + "</td>";
+    }
+    text += "</tr>";
+    text += "<tr>";
+    text += "<td class=field_name>Заливал</td>";
+    text += "<td class=field_value>" + myobject.materials[i][3] + "</td>";
+    text += "</tr>";
+    text += "<tr><td class=field_name colspan=2>Описание</td></tr>";
+    text += "<tr><td class=field_value colspan=2>" + myobject.materials[i][2] + "</td></tr>";
+    text += "</table>";
+    text += "<div class=\"delete_button\"><button onClick=\"javascript:delete_material('" + myobject.materials[i][0] + "')\">Удалить</button></div></div>";
 //    load_belongs();
   };
   document.getElementById("material_list").innerHTML = text;
@@ -125,7 +147,12 @@ function load_authors(){
   var myobject = JSON.parse(jsonHttp.responseText);
   var text = "";
   for(i=0;i<myobject.authors.length;i++){
-    text += "<div class=\"list_element\">"+ myobject.authors[i][1] + "<div class=\"delete_button\"><button onClick=\"javascript:delete_author('" + myobject.authors[i][0] + "')\">Удалить</button></div></div>";
+    text += "<div class=\"list_element\">";
+    text += "<table><tr>";
+    text += "<td class=field_name>ФИО автора</td>";
+    text += "<td class=field_value>" + myobject.authors[i][1] + "</td>";
+    text += "</tr></table>";
+    text += "<div class=\"delete_button\"><button onClick=\"javascript:delete_author('" + myobject.authors[i][0] + "')\">Удалить</button></div></div>";
 //    load_belongs();
   };
   document.getElementById("author_list").innerHTML = text;
@@ -140,9 +167,14 @@ function load_specialities(){
   var text = "";
   for(i=0;i<myobject.speciality.length;i++){
     text += "<div class=\"list_element\">";
-    text += "<table><tr><td>Шифр</td><td>" + myobject.speciality[i][1] +"<td>Название</td><td>"+ myobject.speciality[i][2] + "</td></tr>";
-    text += "<tr><td>Описание</td></tr>";
-    text += "<tr><td>" + myobject.speciality[i][3] + "</td></tr>";
+    text += "<table><tr>";
+    text += "<td class=field_name>Шифр</td>";
+    text += "<td class=field_value>" + myobject.speciality[i][1] + "</td>";
+    text += "<td class=field_name>Название</td>";
+    text += "<td class=field_value>"+ myobject.speciality[i][2] + "</td>";
+    text += "</tr>";
+    text += "<tr><td colspan=2 class=field_name>Описание</td></tr>";
+    text += "<tr><td colspan=2 class=field_value>" + myobject.speciality[i][3] + "</td></tr>";
     text += "</table>";
     text += "<div class=\"delete_button\"><button onClick=\"javascript:delete_speciality('" + myobject.speciality[i][0] + "')\">Удалить</button></div></div>";
 //    load_belongs();
@@ -158,7 +190,17 @@ function load_disciplines(){
   var myobject = JSON.parse(jsonHttp.responseText);
   var text = "";
   for(i=0;i<myobject.discipline.length;i++){
-    text += "<div class=\"list_element\">"+ myobject.discipline[i][1] +" = "+ myobject.discipline[i][2] + " = " + myobject.discipline[i][3] + "<div class=\"delete_button\"><button onClick=\"javascript:delete_discipline('" + myobject.discipline[i][0] + "')\">Удалить</button></div></div>";
+    text += "<div class=\"list_element\">";
+    text += "<table><tr>";
+    text += "<td class=field_name>Название</td>"
+    text += "<td class=field_value>" + myobject.discipline[i][1] + "</td>";
+    text += "<td class=field_name>Семестр</td>";
+    text += "<td class=field_value>"+ myobject.discipline[i][2] + "</td>";
+    text += "</tr>";
+    text += "<tr><td class=field_name colspan=2>Описание</td></tr>";
+    text += "<tr><td class=field_value colspan=2>" + myobject.discipline[i][3] + "</td></tr>";
+    text += "</table>";
+    text += "<div class=\"delete_button\"><button onClick=\"javascript:delete_discipline('" + myobject.discipline[i][0] + "')\">Удалить</button></div></div>";
 //    load_belongs();
   };
   document.getElementById("discipline_list").innerHTML = text;
@@ -172,7 +214,12 @@ function load_study_forms(){
   var myobject = JSON.parse(jsonHttp.responseText);
   var text = "";
   for(i=0;i<myobject.study_form.length;i++){
-    text += "<div class=\"list_element\">"+ myobject.study_form[i][1] + "<div class=\"delete_button\"><button onClick=\"javascript:delete_study_form('" + myobject.study_form[i][0] + "')\">Удалить</button></div></div>";
+    text += "<div class=\"list_element\">";
+    text += "<table><tr>";
+    text += "<td class=field_name>Форма обучения</td>";
+    text += "<td class=field_value>" + myobject.study_form[i][1] + "</td>";
+    text += "</tr></table>";
+    text += "<div class=\"delete_button\"><button onClick=\"javascript:delete_study_form('" + myobject.study_form[i][0] + "')\">Удалить</button></div></div>";
 //    load_belongs();
   };
   document.getElementById("study_form_list").innerHTML = text;
