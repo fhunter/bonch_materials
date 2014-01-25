@@ -12,15 +12,23 @@ function div_toggle(div_id){
   }
 }
 
-function add_material(){
-}
-
 function insert_delete_btn(uuid, func_name){
   var text = "";
   text += "<div class=\"delete_button\"><button onClick=\"javascript:";
   text += func_name;
   text += "('" + uuid + "')\">Удалить</button></div></div>";
   return text;
+}
+
+function fetch_json(request){
+  var jsonHttp = null;
+  jsonHttp = new XMLHttpRequest();
+  jsonHttp.open( "GET", "interface.py?" + request, false );
+  jsonHttp.send( null );
+  return JSON.parse(jsonHttp.responseText);
+}
+
+function add_material(){
 }
 
 function add_author(){
@@ -112,11 +120,7 @@ function data_load(){
 }
 
 function load_materials(){
-  var jsonHttp = null;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=materials", false );
-  jsonHttp.send( null );
-  var myobject = JSON.parse(jsonHttp.responseText);
+  var myobject = fetch_json("query=materials");
   var text = "";
   for(i=0;i<myobject.materials.length;i++){
     text += "<div class=\"list_element\">";
@@ -148,11 +152,7 @@ function load_materials(){
 }
 
 function load_authors(){
-  var jsonHttp = null;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=authors", false );
-  jsonHttp.send( null );
-  var myobject = JSON.parse(jsonHttp.responseText);
+  var myobject = fetch_json("query=authors");
   var text = "";
   for(i=0;i<myobject.authors.length;i++){
     text += "<div class=\"list_element\">";
@@ -167,11 +167,7 @@ function load_authors(){
 }
 
 function load_specialities(){
-  var jsonHttp = null;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=speciality", false );
-  jsonHttp.send( null );
-  var myobject = JSON.parse(jsonHttp.responseText);
+  var myobject = fetch_json("query=speciality");
   var text = "";
   for(i=0;i<myobject.speciality.length;i++){
     text += "<div class=\"list_element\">";
@@ -191,11 +187,7 @@ function load_specialities(){
 }
 
 function load_disciplines(){
-  var jsonHttp = null;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=discipline", false );
-  jsonHttp.send( null );
-  var myobject = JSON.parse(jsonHttp.responseText);
+  var myobject = fetch_json("query=discipline");
   var text = "";
   for(i=0;i<myobject.discipline.length;i++){
     text += "<div class=\"list_element\">";
@@ -215,11 +207,7 @@ function load_disciplines(){
 }
 
 function load_study_forms(){
-  var jsonHttp = null;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=study_form", false );
-  jsonHttp.send( null );
-  var myobject = JSON.parse(jsonHttp.responseText);
+  var myobject = fetch_json("query=study_form");
   var text = "";
   for(i=0;i<myobject.study_form.length;i++){
     text += "<div class=\"list_element\">";
