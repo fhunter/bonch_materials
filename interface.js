@@ -139,7 +139,12 @@ function load_specialities(){
   var myobject = JSON.parse(jsonHttp.responseText);
   var text = "";
   for(i=0;i<myobject.speciality.length;i++){
-    text += "<div class=\"list_element\">"+ myobject.speciality[i][1] +" = "+ myobject.speciality[i][2] + " = " + myobject.speciality[i][3] + "<div class=\"delete_button\"><button onClick=\"javascript:delete_speciality('" + myobject.speciality[i][0] + "')\">Удалить</button></div></div>";
+    text += "<div class=\"list_element\">";
+    text += "<table><tr><td>Шифр</td><td>" + myobject.speciality[i][1] +"<td>Название</td><td>"+ myobject.speciality[i][2] + "</td></tr>";
+    text += "<tr><td>Описание</td></tr>";
+    text += "<tr><td>" + myobject.speciality[i][3] + "</td></tr>";
+    text += "</table>";
+    text += "<div class=\"delete_button\"><button onClick=\"javascript:delete_speciality('" + myobject.speciality[i][0] + "')\">Удалить</button></div></div>";
 //    load_belongs();
   };
   document.getElementById("speciality_list").innerHTML = text;
