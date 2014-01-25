@@ -28,86 +28,75 @@ function fetch_json(request){
   return JSON.parse(jsonHttp.responseText);
 }
 
+function gen_table_row(name, value ){
+    var text = "";
+    text += "<tr>";
+    text += "<td class=field_name>" + name + "</td>";
+    text += "<td class=field_value>" + value + "</td>";
+    text += "</tr>";
+    return text;
+}
+
+function gen_table_row_wide( name, value ){ 
+    var text = "";
+    text += "<tr><td class=field_name>" + name + "</td></tr>";
+    text += "<tr><td class=field_value colspan=2>" + value + "</td></tr>";
+    return text;
+}
+
 function add_material(){
 }
 
 function add_author(){
-  var jsonHttp = null;
   var name = document.getElementById("authors_name").value;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=add_author&fio="+name, false );
-  jsonHttp.send( null );
+  fetch_json( "query=add_author&fio="+name);
   load_authors()
 }
 
 function add_speciality(){
-  var jsonHttp = null;
   var name = document.getElementById("speciality_name").value;
   var code = document.getElementById("speciality_code").value;
   var desc = document.getElementById("speciality_description").value;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=add_speciality&name="+name+"&code="+code+"&desc="+desc, false );
-  jsonHttp.send( null );
+  fetch_json( "query=add_speciality&name="+name+"&code="+code+"&desc="+desc );
   load_specialities()
 }
 
 function add_discipline(){
-  var jsonHttp = null;
   var name = document.getElementById("discipline_name").value;
   var sem = document.getElementById("discipline_semester").value;
   var desc = document.getElementById("discipline_description").value;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=add_discipline&name="+name+"&sem="+sem+"&desc="+desc, false );
-  jsonHttp.send( null );
+  fetch_json( "query=add_discipline&name="+name+"&sem="+sem+"&desc="+desc);
   load_disciplines()
 }
 
 function add_study_form(){
-  var jsonHttp = null;
   var name = document.getElementById("study_form_name").value;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=add_study_form&name="+name, false );
-  jsonHttp.send( null );
+  fetch_json( "query=add_study_form&name="+name);
   load_study_forms()
 }
 
 function delete_material(uuid){
-  var jsonHttp = null;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=delete_material&uuid="+uuid, false );
-  jsonHttp.send( null );
+  fetch_json( "query=delete_material&uuid="+uuid );
   load_materials()
 }
 
 function delete_author(uuid){
-  var jsonHttp = null;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=delete_author&uuid="+uuid, false );
-  jsonHttp.send( null );
+  fetch_json( "query=delete_author&uuid="+uuid );
   load_authors()
 }
 
 function delete_speciality(uuid){
-  var jsonHttp = null;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=delete_speciality&uuid="+uuid, false );
-  jsonHttp.send( null );
+  fetch_json( "query=delete_speciality&uuid="+uuid );
   load_specialities()
 }
 
 function delete_discipline(uuid){
-  var jsonHttp = null;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=delete_discipline&uuid="+uuid, false );
-  jsonHttp.send( null );
+  fetch_json( "query=delete_discipline&uuid="+uuid );
   load_disciplines()
 }
 
 function delete_study_form(uuid){
-  var jsonHttp = null;
-  jsonHttp = new XMLHttpRequest();
-  jsonHttp.open( "GET", "interface.py?query=delete_study_form&uuid="+uuid, false );
-  jsonHttp.send( null );
+  fetch_json( "query=delete_study_form&uuid="+uuid );
   load_study_forms()
 }
 
@@ -124,28 +113,15 @@ function load_materials(){
   var text = "";
   for(i=0;i<myobject.materials.length;i++){
     text += "<div class=\"list_element\">";
-    text += "<table><tr>";
-    text += "<td class=field_name>Название</td>";
-    text += "<td class=field_value>" + myobject.materials[i][1] + "</td>";
-    text += "</tr>";
-    text += "<tr>";
-    text += "<td class=field_name>Дата заливки</td>";
-    text += "<td class=field_value>" + myobject.materials[i][4] + "</td>";
-    text += "</tr>";
-    text += "<tr>";
-    text += "<td class=field_name>Дата редактирования</td>";
+    text += "<table>";
+    text += gen_table_row( "Название" , myobject.materials[i][1]);
+    text += gen_table_row( "Дата заливки" , myobject.materials[i][4]);
     if(myobject.materials[i][5]==null){
-      text += "<td class=field_value>" + "Никогда" + "</td>";
-    }else{
-      text += "<td class=field_value>" + myobject.materials[i][5] + "</td>";
+      myobject.materials[i][5]="Никогда";
     }
-    text += "</tr>";
-    text += "<tr>";
-    text += "<td class=field_name>Заливал</td>";
-    text += "<td class=field_value>" + myobject.materials[i][3] + "</td>";
-    text += "</tr>";
-    text += "<tr><td class=field_name>Описание</td></tr>";
-    text += "<tr><td class=field_value colspan=2>" + myobject.materials[i][2] + "</td></tr>";
+    text += gen_table_row( "Дата редактирования" , myobject.materials[i][5]);
+    text += gen_table_row( "Заливал", myobject.materials[i][3]);
+    text += gen_table_row_wide( "Описание", myobject.materials[i][2]);
     text += "</table>";
     text += insert_delete_btn(myobject.materials[i][0], "delete_material");
 //    load_belongs();
@@ -158,10 +134,9 @@ function load_authors(){
   var text = "";
   for(i=0;i<myobject.authors.length;i++){
     text += "<div class=\"list_element\">";
-    text += "<table><tr>";
-    text += "<td class=field_name>ФИО автора</td>";
-    text += "<td class=field_value>" + myobject.authors[i][1] + "</td>";
-    text += "</tr></table>";
+    text += "<table>";
+    text += gen_table_row( "ФИО автора", myobject.authors[i][1] );
+    text += "</table>";
     text += insert_delete_btn( myobject.authors[i][0], "delete_author");
 //    load_belongs();
   };
@@ -173,16 +148,10 @@ function load_specialities(){
   var text = "";
   for(i=0;i<myobject.speciality.length;i++){
     text += "<div class=\"list_element\">";
-    text += "<table><tr>";
-    text += "<td class=field_name>Шифр</td>";
-    text += "<td class=field_value>" + myobject.speciality[i][1] + "</td>";
-    text += "</tr>";
-    text += "<tr>";
-    text += "<td class=field_name>Название</td>";
-    text += "<td class=field_value>"+ myobject.speciality[i][2] + "</td>";
-    text += "</tr>";
-    text += "<tr><td class=field_name>Описание</td></tr>";
-    text += "<tr><td colspan=2 class=field_value>" + myobject.speciality[i][3] + "</td></tr>";
+    text += "<table>";
+    text += gen_table_row( "Шифр", myobject.speciality[i][1] );
+    text += gen_table_row( "Название", myobject.speciality[i][2] );
+    text += gen_table_row_wide( "Описание", myobject.speciality[i][3] );
     text += "</table>";
     text += insert_delete_btn( myobject.speciality[i][0], "delete_speciality" );
 //    load_belongs();
@@ -195,16 +164,10 @@ function load_disciplines(){
   var text = "";
   for(i=0;i<myobject.discipline.length;i++){
     text += "<div class=\"list_element\">";
-    text += "<table><tr>";
-    text += "<td class=field_name>Название</td>"
-    text += "<td class=field_value>" + myobject.discipline[i][1] + "</td>";
-    text += "</tr>";
-    text += "<tr>";
-    text += "<td class=field_name>Семестр</td>";
-    text += "<td class=field_value>"+ myobject.discipline[i][2] + "</td>";
-    text += "</tr>";
-    text += "<tr><td class=field_name>Описание</td></tr>";
-    text += "<tr><td class=field_value colspan=2>" + myobject.discipline[i][3] + "</td></tr>";
+    text += "<table>";
+    text += gen_table_row( "Название", myobject.discipline[i][1] );
+    text += gen_table_row( "Семестр", myobject.discipline[i][2] );
+    text += gen_table_row_wide( "Описание", myobject.discipline[i][3] );
     text += "</table>";
     text += insert_delete_btn( myobject.discipline[i][0], "delete_discipline" );
 //    load_belongs();
@@ -217,10 +180,9 @@ function load_study_forms(){
   var text = "";
   for(i=0;i<myobject.study_form.length;i++){
     text += "<div class=\"list_element\">";
-    text += "<table><tr>";
-    text += "<td class=field_name>Форма обучения</td>";
-    text += "<td class=field_value>" + myobject.study_form[i][1] + "</td>";
-    text += "</tr></table>";
+    text += "<table>";
+    text += gen_table_row( "Форма обучения", myobject.study_form[i][1] );
+    text += "</table>";
     text += insert_delete_btn( myobject.study_form[i][0], "delete_study_form" );
 //    load_belongs();
   };
