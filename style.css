@@ -37,9 +37,13 @@ div {
 }
 
 .field_name {
+  background: red;
+  display: table-cell;
 }
 
 .field_value {
+  background: yellow;
+  display: table-cell;
 }
 
 
