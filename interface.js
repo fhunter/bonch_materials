@@ -15,6 +15,14 @@ function div_toggle(div_id){
 function add_material(){
 }
 
+function insert_delete_btn(uuid, func_name){
+  var text = "";
+  text += "<div class=\"delete_button\"><button onClick=\"javascript:";
+  text += func_name;
+  text += "('" + uuid + "')\">Удалить</button></div></div>";
+  return text;
+}
+
 function add_author(){
   var jsonHttp = null;
   var name = document.getElementById("authors_name").value;
@@ -133,7 +141,7 @@ function load_materials(){
     text += "<tr><td class=field_name colspan=2>Описание</td></tr>";
     text += "<tr><td class=field_value colspan=2>" + myobject.materials[i][2] + "</td></tr>";
     text += "</table>";
-    text += "<div class=\"delete_button\"><button onClick=\"javascript:delete_material('" + myobject.materials[i][0] + "')\">Удалить</button></div></div>";
+    text += insert_delete_btn(myobject.materials[i][0], "delete_material");
 //    load_belongs();
   };
   document.getElementById("material_list").innerHTML = text;
@@ -152,7 +160,7 @@ function load_authors(){
     text += "<td class=field_name>ФИО автора</td>";
     text += "<td class=field_value>" + myobject.authors[i][1] + "</td>";
     text += "</tr></table>";
-    text += "<div class=\"delete_button\"><button onClick=\"javascript:delete_author('" + myobject.authors[i][0] + "')\">Удалить</button></div></div>";
+    text += insert_delete_btn( myobject.authors[i][0], "delete_author");
 //    load_belongs();
   };
   document.getElementById("author_list").innerHTML = text;
@@ -176,7 +184,7 @@ function load_specialities(){
     text += "<tr><td colspan=2 class=field_name>Описание</td></tr>";
     text += "<tr><td colspan=2 class=field_value>" + myobject.speciality[i][3] + "</td></tr>";
     text += "</table>";
-    text += "<div class=\"delete_button\"><button onClick=\"javascript:delete_speciality('" + myobject.speciality[i][0] + "')\">Удалить</button></div></div>";
+    text += insert_delete_btn( myobject.speciality[i][0], "delete_speciality" );
 //    load_belongs();
   };
   document.getElementById("speciality_list").innerHTML = text;
@@ -200,7 +208,7 @@ function load_disciplines(){
     text += "<tr><td class=field_name colspan=2>Описание</td></tr>";
     text += "<tr><td class=field_value colspan=2>" + myobject.discipline[i][3] + "</td></tr>";
     text += "</table>";
-    text += "<div class=\"delete_button\"><button onClick=\"javascript:delete_discipline('" + myobject.discipline[i][0] + "')\">Удалить</button></div></div>";
+    text += insert_delete_btn( myobject.discipline[i][0], "delete_discipline" );
 //    load_belongs();
   };
   document.getElementById("discipline_list").innerHTML = text;
@@ -219,7 +227,7 @@ function load_study_forms(){
     text += "<td class=field_name>Форма обучения</td>";
     text += "<td class=field_value>" + myobject.study_form[i][1] + "</td>";
     text += "</tr></table>";
-    text += "<div class=\"delete_button\"><button onClick=\"javascript:delete_study_form('" + myobject.study_form[i][0] + "')\">Удалить</button></div></div>";
+    text += insert_delete_btn( myobject.study_form[i][0], "delete_study_form" );
 //    load_belongs();
   };
   document.getElementById("study_form_list").innerHTML = text;
