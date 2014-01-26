@@ -30,7 +30,7 @@ else:
 			conn.execute('pragma foreign_keys = on')
 			cursor = conn.cursor()
 			t1 = form["uuid"].value
-			cursor.execute("select author_uuid from authorship where material_uuid = ?", (t1,))
+			cursor.execute("select authorship.author_uuid, authors.fio from authorship,authors where authorship.material_uuid = ? and authors.uuid = authorship.author_uuid", (t1,))
 			conn.commit()
 			js=json.dumps({"error": 0, "belongs": cursor.fetchall()})
 			conn.close()

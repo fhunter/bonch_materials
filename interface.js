@@ -128,9 +128,9 @@ function load_materials(){
     text += gen_table_row( "Заливал", myobject.materials[i][3]);
     tmp = load_belongs(myobject.materials[i][0]);
     for(j = 0; j<tmp.belongs.length;j++){
-      text += gen_table_row( "Автор", tmp.belongs[j][0] + "-" + tmp.belongs[j][1]);
+      text += gen_table_row( "Автор", tmp.belongs[j][1]);
+     //  + "-" + tmp.belongs[j][0]); Добавить кнопку для удаления автора по uuid-у
     };
-
     text += gen_table_row_wide( "Описание", myobject.materials[i][2]);
     text += "</table>";
     text += insert_delete_btn(myobject.materials[i][0], "delete_material");
