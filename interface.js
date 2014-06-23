@@ -45,6 +45,7 @@ function gen_table_row_wide( name, value ){
 }
 
 function add_material(){
+  load_materials()
 }
 
 function add_author(){
