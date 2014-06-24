@@ -66,6 +66,13 @@ def get_speciality():
 	conn.close()
 	return result
 
+def get_belongs(uuid):
+	conn = db_open()
+	cursor = conn.cursor()
+	cursor.execute("select authorship.author_uuid, authors.fio from authorship,authors where authorship.material_uuid = ? and authors.uuid = authorship.author_uuid", (uuid,))
+	result = cursor.fetchall()
+	return result
+
 def insert_delete_btn(uuid, func_name):
 	text =  u""
 	text += u"<div class=\"delete_button\"><button onClick=\"javascript:%s('%s')\">Удалить</button></div></div>" % (func_name, uuid,)
@@ -256,7 +263,24 @@ form = cgi.FieldStorage()
 if "material" in form:
 	header_html()
 	result=get_materials()
-	page = main_page % (str(result), )
+	table = u""
+	for i in result:
+		table += "<div class=\"list_element\">"
+		table += "<table>"
+		table += gen_table_row( u"Название" , i[1])
+		table += gen_table_row( u"Дата заливки" , i[4])
+		if i[5] == None:
+			table += gen_table_row( u"Дата редактирования" , u"Никогда")
+		else:
+			table += gen_table_row( u"Дата редактирования" , i[5])
+		table += gen_table_row( u"Заливал", i[3])
+		tmp = get_belongs(i[0])
+		for j in tmp:
+			table += gen_table_row( u"Автор", j[1])
+		table += gen_table_row_wide( u"Описание", i[2])
+		table += "</table>"
+		table += insert_delete_btn(i[0], "delete_material")
+	page = main_page % (table, )
 	print_ui(page )
 	exit(0)
 if "authors" in form:
@@ -321,20 +345,6 @@ exit(0)
 
 
 
-#	if form["query"].value == "author_for_material":
-#		if "uuid" in form:
-#			conn = db_open()
-#			cursor = conn.cursor()
-#			t1 = form["uuid"].value
-#			cursor.execute("select authorship.author_uuid, authors.fio from authorship,authors where authorship.material_uuid = ? and authors.uuid = authorship.author_uuid", (t1,))
-#			conn.commit()
-#			js=json.dumps({"error": 0, "belongs": cursor.fetchall()})
-#			conn.close()
-#			print_header()
-#			print js
-#		else:
-#			print_header()
-#			print json.dumps({"error": 1 })
 #	if form["query"].value == "add_material":
 #		print_header()
 #		print "Здесь должна быть заливка и проверка материалов"
