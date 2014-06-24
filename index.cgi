@@ -16,25 +16,26 @@ def header_txt():
         print ""
 
 def print_ui(page):
-        print """<html><head><meta http-equiv="Content-Type" content="text/html;charset=utf8"></head><body>"""
+        print """<html><head><meta http-equiv="Content-Type" content="text/html;charset=utf8"></head><body>
+	<link rel="stylesheet" type="text/css" href="style.css" /><title>Система управления учебными материалами</title>"""
         print page.encode('utf-8')
 	print """</body></html>"""
 
-mainpage=u"""
+main_page=u"""
     <div id="container">
       <div id="header">
 	<h1>Система управления учебными материалами</h1>
       </div>
       <div id="menu">
-	<button onClick="div_toggle('material_admin');">Материалы</button>
-	<button onClick="div_toggle('author_admin');">Авторы</button>
-	<button onClick="div_toggle('discipline_admin');">Дисциплины</button>
-	<button onClick="div_toggle('speciality_admin');">Специальности</button>
-	<button onClick="div_toggle('study_form_admin');">Формы обучения</button>
+	<a href="./?material=show">  <button>Материалы</button></a>
+	<a href="./?authors=show">   <button>Авторы</button></a>
+	<a href="./?study_form=show"><button>Дисциплины</button></a>
+	<a href="./?discipline=show"><button>Специальности</button></a>
+	<a href="./?speciality=show"><button>Формы обучения</button></a>
       </div>
       <div id="UI_elements">
 
-	<div id="material_admin" class="UI_tab" style="display: inline">
+	<div id="material_admin" class="UI_tab" >
 	  <h2>Учебные материалы, список</h2>
 	  <div class="add_form">
 	  <form id="material_add_form" action="javascript:add_material()">
@@ -43,13 +44,30 @@ mainpage=u"""
 	  </form>
 	  </div>
 	  <div class="refresh_button">
-	  <button onClick="load_materials();">Обновить</button>
+	  <a href="./?material=show">  <button>Обновить</button></a>
 	  </div>
 	  <div id="material_list" class="UI_list">
 	  </div>
 	</div>
+	</div>
+	</div>
+	"""
 
-	<div id="author_admin" class="UI_tab" style="display: none">
+authors_page=u"""
+    <div id="container">
+      <div id="header">
+	<h1>Система управления учебными материалами</h1>
+      </div>
+      <div id="menu">
+	<a href="./?material=show">  <button>Материалы</button></a>
+	<a href="./?authors=show">   <button>Авторы</button></a>
+	<a href="./?study_form=show"><button>Дисциплины</button></a>
+	<a href="./?discipline=show"><button>Специальности</button></a>
+	<a href="./?speciality=show"><button>Формы обучения</button></a>
+      </div>
+      <div id="UI_elements">
+
+	<div id="author_admin" class="UI_tab" >
 	  <h2>Управление списком авторов</h2>
 	  <div class="add_form">
 	  <form id="author_add_form" action="javascript:add_author()">
@@ -58,13 +76,30 @@ mainpage=u"""
 	  </form>
 	  </div>
 	  <div class="refresh_button">
-	  <button onClick="load_authors();">Обновить</button>
+	  <a href="./?authors=show">  <button>Обновить</button></a>
 	  </div>
 	  <div id="author_list" class="UI_list">
 	  </div>
 	</div>
+	</div>
+	</div>
+	"""
 
-	<div id="discipline_admin" class="UI_tab" style="display: none">
+discipline_page=u"""
+    <div id="container">
+      <div id="header">
+	<h1>Система управления учебными материалами</h1>
+      </div>
+      <div id="menu">
+	<a href="./?material=show">  <button>Материалы</button></a>
+	<a href="./?authors=show">   <button>Авторы</button></a>
+	<a href="./?study_form=show"><button>Дисциплины</button></a>
+	<a href="./?discipline=show"><button>Специальности</button></a>
+	<a href="./?speciality=show"><button>Формы обучения</button></a>
+      </div>
+      <div id="UI_elements">
+
+	<div id="discipline_admin" class="UI_tab" >
 	  <h2>Управление списком дисциплин</h2>
 	  <div class="add_form">
 	  <form id="discipline_add_form" action="javascript:add_discipline()">
@@ -77,13 +112,29 @@ mainpage=u"""
 	  </form>
 	  </div>
 	  <div class="refresh_button">
-	  <button onClick="load_disciplines();">Обновить</button>
+	  <a href="./?discipline=show">  <button>Обновить</button></a>
 	  </div>
 	  <div id="discipline_list" class="UI_list">
 	  </div>
 	</div>
+	</div>
+	</div>
+	"""
 
-	<div id="speciality_admin" class="UI_tab" style="display: none">
+speciality_page=u"""
+    <div id="container">
+      <div id="header">
+	<h1>Система управления учебными материалами</h1>
+      </div>
+      <div id="menu">
+	<a href="./?material=show">  <button>Материалы</button></a>
+	<a href="./?authors=show">   <button>Авторы</button></a>
+	<a href="./?study_form=show"><button>Дисциплины</button></a>
+	<a href="./?discipline=show"><button>Специальности</button></a>
+	<a href="./?speciality=show"><button>Формы обучения</button></a>
+      </div>
+      <div id="UI_elements">
+	<div id="speciality_admin" class="UI_tab" >
 	  <h2>Управление списком специальностей</h2>
 	  <div class="add_form">
 	  <form id="speciality_add_form" action="javascript:add_speciality()">
@@ -95,13 +146,29 @@ mainpage=u"""
 	  </form>
 	  </div>
 	  <div class="refresh_button">
-	  <button onClick="load_specialities();">Обновить</button>
+	  <a href="./?speciality=show">  <button>Обновить</button></a>
 	  </div>
 	  <div id="speciality_list" class="UI_list">
 	  </div>
 	</div>
+	</div>
+	</div>
+	"""
 
-	<div id="study_form_admin" class="UI_tab" style="display: none">
+study_form_page=u"""
+    <div id="container">
+      <div id="header">
+	<h1>Система управления учебными материалами</h1>
+      </div>
+      <div id="menu">
+	<a href="./?material=show">  <button>Материалы</button></a>
+	<a href="./?authors=show">   <button>Авторы</button></a>
+	<a href="./?study_form=show"><button>Дисциплины</button></a>
+	<a href="./?discipline=show"><button>Специальности</button></a>
+	<a href="./?speciality=show"><button>Формы обучения</button></a>
+      </div>
+      <div id="UI_elements">
+	  <div id="study_form_admin" class="UI_tab" >
 	  <h2>Управление списком форм обучения</h2>
 	  <div class="add_form">
 	  <form id="study_form_add_form" action="javascript:add_study_form()">
@@ -110,7 +177,7 @@ mainpage=u"""
 	  </form>
 	  </div>
 	  <div class="refresh_button">
-	  <button onClick="load_study_forms();">Обновить</button>
+	  <a href="./?study_form=show">  <button>Обновить</button></a>
 	  </div>
 	  <div id="study_form_list" class="UI_list">
 	  </div>
@@ -120,5 +187,28 @@ mainpage=u"""
     </div>
 """
 
+form = cgi.FieldStorage()
+
+if "material" in form:
+	header_html()
+	print_ui(main_page)
+	exit(0)
+if "authors" in form:
+	header_html()
+	print_ui(authors_page)
+	exit(0)
+if "study_form" in form:
+	header_html()
+	print_ui(study_form_page)
+	exit(0)
+if "discipline" in form:
+	header_html()
+	print_ui(discipline_page)
+	exit(0)
+if "speciality" in form:
+	header_html()
+	print_ui(speciality_page)
+	exit(0)
 header_html()
-print_ui(mainpage)
+print_ui(main_page)
+exit(0)
