@@ -1,24 +1,3 @@
-function div_toggle(div_id){
-  var t=document.getElementById(div_id);
-  for(i=0;i<t.parentElement.getElementsByTagName("div").length;i++){
-    p=t.parentElement.getElementsByTagName("div")[i];
-    if(p.parentElement.id == t.parentElement.id ){
-      if(p.id==div_id){
-	p.style.display ="inline";
-      }else{
-	p.style.display ="none";
-      }
-    }
-  }
-}
-
-function insert_delete_btn(uuid, func_name){
-  var text = "";
-  text += "<div class=\"delete_button\"><button onClick=\"javascript:";
-  text += func_name;
-  text += "('" + uuid + "')\">Удалить</button></div></div>";
-  return text;
-}
 
 function fetch_json(request){
   var jsonHttp = null;
@@ -26,22 +5,6 @@ function fetch_json(request){
   jsonHttp.open( "GET", "interface.py?" + request, false );
   jsonHttp.send( null );
   return JSON.parse(jsonHttp.responseText);
-}
-
-function gen_table_row(name, value ){
-    var text = "";
-    text += "<tr>";
-    text += "<td class=field_name>" + name + "</td>";
-    text += "<td class=field_value>" + value + "</td>";
-    text += "</tr>";
-    return text;
-}
-
-function gen_table_row_wide( name, value ){ 
-    var text = "";
-    text += "<tr><td class=field_name>" + name + "</td></tr>";
-    text += "<tr><td class=field_value colspan=2>" + value + "</td></tr>";
-    return text;
 }
 
 function add_material(){
@@ -140,62 +103,3 @@ function load_materials(){
   document.getElementById("material_list").innerHTML = text;
 }
 
-function load_authors(){
-  var myobject = fetch_json("query=authors");
-  var text = "";
-  for(i=0;i<myobject.authors.length;i++){
-    text += "<div class=\"list_element\">";
-    text += "<table>";
-    text += gen_table_row( "ФИО автора", myobject.authors[i][1] );
-    text += "</table>";
-    text += insert_delete_btn( myobject.authors[i][0], "delete_author");
-//    load_belongs();
-  };
-  document.getElementById("author_list").innerHTML = text;
-}
-
-function load_specialities(){
-  var myobject = fetch_json("query=speciality");
-  var text = "";
-  for(i=0;i<myobject.speciality.length;i++){
-    text += "<div class=\"list_element\">";
-    text += "<table>";
-    text += gen_table_row( "Шифр", myobject.speciality[i][1] );
-    text += gen_table_row( "Название", myobject.speciality[i][2] );
-    text += gen_table_row_wide( "Описание", myobject.speciality[i][3] );
-    text += "</table>";
-    text += insert_delete_btn( myobject.speciality[i][0], "delete_speciality" );
-//    load_belongs();
-  };
-  document.getElementById("speciality_list").innerHTML = text;
-}
-
-function load_disciplines(){
-  var myobject = fetch_json("query=discipline");
-  var text = "";
-  for(i=0;i<myobject.discipline.length;i++){
-    text += "<div class=\"list_element\">";
-    text += "<table>";
-    text += gen_table_row( "Название", myobject.discipline[i][1] );
-    text += gen_table_row( "Семестр", myobject.discipline[i][2] );
-    text += gen_table_row_wide( "Описание", myobject.discipline[i][3] );
-    text += "</table>";
-    text += insert_delete_btn( myobject.discipline[i][0], "delete_discipline" );
-//    load_belongs();
-  };
-  document.getElementById("discipline_list").innerHTML = text;
-}
-
-function load_study_forms(){
-  var myobject = fetch_json("query=study_form");
-  var text = "";
-  for(i=0;i<myobject.study_form.length;i++){
-    text += "<div class=\"list_element\">";
-    text += "<table>";
-    text += gen_table_row( "Форма обучения", myobject.study_form[i][1] );
-    text += "</table>";
-    text += insert_delete_btn( myobject.study_form[i][0], "delete_study_form" );
-//    load_belongs();
-  };
-  document.getElementById("study_form_list").innerHTML = text;
-}
