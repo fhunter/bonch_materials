@@ -59,6 +59,12 @@ def get_authors():
 	result = db_exec_sql("select uuid, fio from authors")
 	return result
 
+def add_authors(name):
+	db_exec_sql("insert into authors (uuid, fio) select *, ? from next_uuid", (str(name).decode('utf-8'),))
+
+def del_authors(uuid):
+	db_exec_sql("delete from authors where uuid = ?", (uuid,))
+
 def get_study_form():
 	result = db_exec_sql("select uuid, study_form from study_form")
 	return result
@@ -338,10 +344,6 @@ header_html()
 print_ui(main_page )
 exit(0)
 
-
-
-
-
 #	if form["query"].value == "add_material":
 #		print_header()
 #		print "Здесь должна быть заливка и проверка материалов"
@@ -375,34 +377,6 @@ exit(0)
 #			cursor.execute("delete from discipline where uuid = ?", (t,))
 #			conn.commit()
 #			js=json.dumps({"error": 0, "discipline": cursor.fetchall()})
-#			conn.close()
-#			print_header()
-#			print js
-#		else:
-#			print_header()
-#			print json.dumps({"error": 1 })
-#	if form["query"].value == "add_author":
-#		if "fio" in form:
-#			conn = db_open()
-#			cursor = conn.cursor()
-#			t = form["fio"].value
-#			cursor.execute("insert into authors (uuid, fio) select *, ? from next_uuid", (str(t).decode('utf-8'),))
-#			conn.commit()
-#			js=json.dumps({"error": 0, "authors": cursor.fetchall()})
-#			conn.close()
-#			print_header()
-#			print js
-#		else:
-#			print_header()
-#			print json.dumps({"error": 1 })
-#	if form["query"].value == "delete_author":
-#		if "uuid" in form:
-#			conn = db_open()
-#			cursor = conn.cursor()
-#			t = form["uuid"].value
-#			cursor.execute("delete from authors where uuid = ?", (t,))
-#			conn.commit()
-#			js=json.dumps({"error": 0, "authors": cursor.fetchall()})
 #			conn.close()
 #			print_header()
 #			print js
