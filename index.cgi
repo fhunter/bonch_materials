@@ -86,12 +86,7 @@ def gen_table_row_wide( name, value ):
 	text = u"<tr><td class=field_name>%s</td></tr><tr><td class=field_value colspan=2>%s</td></tr>" %( name, value, )
 	return text
 
-
-main_page=u"""
-    <div id="container">
-      <div id="header">
-	<h1>Система управления учебными материалами</h1>
-      </div>
+menu_include = u"""
       <div id="menu">
 	<a href="./?material=show">  <button>Материалы</button></a>
 	<a href="./?authors=show">   <button>Авторы</button></a>
@@ -99,6 +94,13 @@ main_page=u"""
 	<a href="./?speciality=show"><button>Специальности</button></a>
 	<a href="./?study_form=show"><button>Формы обучения</button></a>
       </div>
+"""
+
+main_page=u"""
+    <div id="container">
+      <div id="header">
+	<h1>Система управления учебными материалами</h1>
+      </div>""" + menu_include + u"""
       <div id="UI_elements">
 
 	<div id="material_admin" class="UI_tab" >
@@ -124,14 +126,7 @@ authors_page=u"""
     <div id="container">
       <div id="header">
 	<h1>Система управления учебными материалами</h1>
-      </div>
-      <div id="menu">
-	<a href="./?material=show">  <button>Материалы</button></a>
-	<a href="./?authors=show">   <button>Авторы</button></a>
-	<a href="./?discipline=show"><button>Дисциплины</button></a>
-	<a href="./?speciality=show"><button>Специальности</button></a>
-	<a href="./?study_form=show"><button>Формы обучения</button></a>
-      </div>
+      </div>""" + menu_include + u"""
       <div id="UI_elements">
 
 	<div id="author_admin" class="UI_tab" >
@@ -157,14 +152,7 @@ discipline_page=u"""
     <div id="container">
       <div id="header">
 	<h1>Система управления учебными материалами</h1>
-      </div>
-      <div id="menu">
-	<a href="./?material=show">  <button>Материалы</button></a>
-	<a href="./?authors=show">   <button>Авторы</button></a>
-	<a href="./?discipline=show"><button>Дисциплины</button></a>
-	<a href="./?speciality=show"><button>Специальности</button></a>
-	<a href="./?study_form=show"><button>Формы обучения</button></a>
-      </div>
+      </div>""" + menu_include + u"""
       <div id="UI_elements">
 
 	<div id="discipline_admin" class="UI_tab" >
@@ -194,14 +182,7 @@ speciality_page=u"""
     <div id="container">
       <div id="header">
 	<h1>Система управления учебными материалами</h1>
-      </div>
-      <div id="menu">
-	<a href="./?material=show">  <button>Материалы</button></a>
-	<a href="./?authors=show">   <button>Авторы</button></a>
-	<a href="./?discipline=show"><button>Дисциплины</button></a>
-	<a href="./?speciality=show"><button>Специальности</button></a>
-	<a href="./?study_form=show"><button>Формы обучения</button></a>
-      </div>
+      </div>""" + menu_include + u"""
       <div id="UI_elements">
 	<div id="speciality_admin" class="UI_tab" >
 	  <h2>Управление списком специальностей</h2>
@@ -229,14 +210,7 @@ study_form_page=u"""
     <div id="container">
       <div id="header">
 	<h1>Система управления учебными материалами</h1>
-      </div>
-      <div id="menu">
-	<a href="./?material=show">  <button>Материалы</button></a>
-	<a href="./?authors=show">   <button>Авторы</button></a>
-	<a href="./?discipline=show"><button>Дисциплины</button></a>
-	<a href="./?speciality=show"><button>Специальности</button></a>
-	<a href="./?study_form=show"><button>Формы обучения</button></a>
-      </div>
+      </div>""" + menu_include + u"""
       <div id="UI_elements">
 	  <div id="study_form_admin" class="UI_tab" >
 	  <h2>Управление списком форм обучения</h2>
