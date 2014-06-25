@@ -55,6 +55,12 @@ def get_discipline():
 	result = db_exec_sql("select uuid, name,semester,description from discipline")
 	return result
 
+def add_discipline(name,semester,description):
+	db_exec_sql("insert into discipline (uuid, name, semester, description) select *, ?, ?, ? from next_uuid", (str(name).decode('utf-8'),str(semester).decode('utf-8'),str(description).decode('utf-8'),))
+
+def del_discipline(uuid):
+	db_exec_sql("delete from discipline where uuid = ?", (uuid,))
+
 def get_authors():
 	result = db_exec_sql("select uuid, fio from authors")
 	return result
@@ -309,6 +315,15 @@ if "study_form" in form:
 	exit(0)
 if "discipline" in form:
 	header_html()
+	if is_post():
+		if ("discipline_name" in form) and ("discipline_semester" in form):
+			discipline_name = cgi.escape(form.getfirst("discipline_name",""))
+			discipline_semester = cgi.escape(form.getfirst("discipline_semester",""))
+			discipline_description = cgi.escape(form.getfirst("discipline_description",""))
+			add_discipline(discipline_name,discipline_semester,discipline_description)
+		if "uuid" in form:
+			uuid = cgi.escape(form.getfirst("uuid",""))
+			del_discipline(uuid)
 	result=get_discipline()
 	table = u""
 	for i in result:
@@ -319,6 +334,7 @@ if "discipline" in form:
 		table += gen_table_row_wide( u"Описание", i[3] )
 		table += "</table>"
 		table += insert_delete_btn( i[0], "discipline=delete" )
+		table += "</div>"
 	page = discipline_page % (table, )
 	print_ui(page)
 	exit(0)
@@ -357,39 +373,6 @@ exit(0)
 #	if form["query"].value == "delete_material":
 #		print_header()
 #		print "Здесь должно быть удаление материалов"
-#	if form["query"].value == "add_discipline":
-#		if "name" in form and "sem" in form:
-#			conn = db_open()
-#			cursor = conn.cursor()
-#			t1 = form["name"].value
-#			t2 = form["sem"].value
-#			if "desc" in form:
-#				t3 = form["desc"].value
-#			else:
-#				t3 = ""
-#			cursor.execute("insert into discipline (uuid, name, semester, description) select *, ?, ?, ? from next_uuid", (str(t1).decode('utf-8'),str(t2).decode('utf-8'),str(t3).decode('utf-8'),))
-#			conn.commit()
-#			js=json.dumps({"error": 0, "discipline": cursor.fetchall()})
-#			conn.close()
-#			print_header()
-#			print js
-#		else:
-#			print_header()
-#			print json.dumps({"error": 1 })
-#	if form["query"].value == "delete_discipline":
-#		if "uuid" in form:
-#			conn = db_open()
-#			cursor = conn.cursor()
-#			t = form["uuid"].value
-#			cursor.execute("delete from discipline where uuid = ?", (t,))
-#			conn.commit()
-#			js=json.dumps({"error": 0, "discipline": cursor.fetchall()})
-#			conn.close()
-#			print_header()
-#			print js
-#		else:
-#			print_header()
-#			print json.dumps({"error": 1 })
 #	if form["query"].value == "add_belongs":
 #		print_header()
 #		print "Здесь должна быть обработка принадлежности"
