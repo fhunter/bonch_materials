@@ -12,6 +12,20 @@ def db_open():
 	conn.execute('pragma foreign_keys = on')
 	return conn
 
+def db_exec_sql(*request):
+	if len(request)<1:
+		return None
+	conn = db_open()
+	cursor = conn.cursor()
+	if len(request)==1:
+		cursor.execute(request[0])
+	else:
+		cursor.execute(request[0],request[1])
+	result=cursor.fetchall()
+	conn.close()
+	return result
+	
+
 def header_html():
         print "Content-type: text/html"
         print ""
@@ -27,50 +41,27 @@ def print_ui(page):
 	print """</body></html>"""
 
 def get_materials():
-	conn = db_open()
-	cursor = conn.cursor()
-	cursor.execute("select uuid, name,description,owner, upload_date, edit_date from materials")
-	result=cursor.fetchall()
-	conn.close()
+	result = db_exec_sql("select uuid, name,description,owner, upload_date, edit_date from materials")
 	return result
 
 def get_discipline():
-	conn = db_open()
-	cursor = conn.cursor()
-	cursor.execute("select uuid, name,semester,description from discipline")
-	result = cursor.fetchall()
-	conn.close()
+	result = db_exec_sql("select uuid, name,semester,description from discipline")
 	return result
 
 def get_authors():
-	conn = db_open()
-	cursor = conn.cursor()
-	cursor.execute("select uuid, fio from authors")
-	result=cursor.fetchall()
-	conn.close()
+	result = db_exec_sql("select uuid, fio from authors")
 	return result
 
 def get_study_form():
-	conn = db_open()
-	cursor = conn.cursor()
-	cursor.execute("select uuid, study_form from study_form")
-	result=cursor.fetchall()
-	conn.close()
+	result = db_exec_sql("select uuid, study_form from study_form")
 	return result
 
 def get_speciality():
-	conn = db_open()
-	cursor = conn.cursor()
-	cursor.execute("select uuid, code, name, description from speciality")
-	result=cursor.fetchall()
-	conn.close()
+	result = db_exec_sql("select uuid, code, name, description from speciality")
 	return result
 
 def get_belongs(uuid):
-	conn = db_open()
-	cursor = conn.cursor()
-	cursor.execute("select authorship.author_uuid, authors.fio from authorship,authors where authorship.material_uuid = ? and authors.uuid = authorship.author_uuid", (uuid,))
-	result = cursor.fetchall()
+	result = db_exec_sql("select authorship.author_uuid, authors.fio from authorship,authors where authorship.material_uuid = ? and authors.uuid = authorship.author_uuid", (uuid,))
 	return result
 
 def insert_delete_btn(uuid, func_name):
@@ -86,6 +77,13 @@ def gen_table_row_wide( name, value ):
 	text = u"<tr><td class=field_name>%s</td></tr><tr><td class=field_value colspan=2>%s</td></tr>" %( name, value, )
 	return text
 
+header_include= u"""
+    <div id="container">
+      <div id="header">
+	<h1>Система управления учебными материалами</h1>
+      </div>
+"""
+
 menu_include = u"""
       <div id="menu">
 	<a href="./?material=show">  <button>Материалы</button></a>
@@ -96,11 +94,7 @@ menu_include = u"""
       </div>
 """
 
-main_page=u"""
-    <div id="container">
-      <div id="header">
-	<h1>Система управления учебными материалами</h1>
-      </div>""" + menu_include + u"""
+main_page= header_include + menu_include + u"""
       <div id="UI_elements">
 
 	<div id="material_admin" class="UI_tab" >
@@ -122,11 +116,7 @@ main_page=u"""
 	</div>
 	"""
 
-authors_page=u"""
-    <div id="container">
-      <div id="header">
-	<h1>Система управления учебными материалами</h1>
-      </div>""" + menu_include + u"""
+authors_page=header_include + menu_include + u"""
       <div id="UI_elements">
 
 	<div id="author_admin" class="UI_tab" >
@@ -148,11 +138,7 @@ authors_page=u"""
 	</div>
 	"""
 
-discipline_page=u"""
-    <div id="container">
-      <div id="header">
-	<h1>Система управления учебными материалами</h1>
-      </div>""" + menu_include + u"""
+discipline_page=header_include + menu_include + u"""
       <div id="UI_elements">
 
 	<div id="discipline_admin" class="UI_tab" >
@@ -178,11 +164,7 @@ discipline_page=u"""
 	</div>
 	"""
 
-speciality_page=u"""
-    <div id="container">
-      <div id="header">
-	<h1>Система управления учебными материалами</h1>
-      </div>""" + menu_include + u"""
+speciality_page=header_include + menu_include + u"""
       <div id="UI_elements">
 	<div id="speciality_admin" class="UI_tab" >
 	  <h2>Управление списком специальностей</h2>
@@ -206,11 +188,7 @@ speciality_page=u"""
 	</div>
 	"""
 
-study_form_page=u"""
-    <div id="container">
-      <div id="header">
-	<h1>Система управления учебными материалами</h1>
-      </div>""" + menu_include + u"""
+study_form_page=header_include + menu_include + u"""
       <div id="UI_elements">
 	  <div id="study_form_admin" class="UI_tab" >
 	  <h2>Управление списком форм обучения</h2>
