@@ -2,10 +2,16 @@
 # vim: set fileencoding=utf-8 :
 import cgi
 import cgitb
-import json
 import sqlite3
+import os
+import sys
 
 cgitb.enable()
+
+def is_post():
+	if os.environ['REQUEST_METHOD'] == 'POST':
+		return True
+	return False
 
 def db_open():
 	conn = sqlite3.connect("materials.sqlite")
@@ -22,6 +28,7 @@ def db_exec_sql(*request):
 	else:
 		cursor.execute(request[0],request[1])
 	result=cursor.fetchall()
+	conn.commit()
 	conn.close()
 	return result
 	
@@ -56,6 +63,12 @@ def get_study_form():
 	result = db_exec_sql("select uuid, study_form from study_form")
 	return result
 
+def add_study_form(name):
+	db_exec_sql("insert into study_form (uuid, study_form) select *, ? from next_uuid", (str(name).decode('utf-8'),))
+
+def del_study_form(uuid):
+	db_exec_sql("delete from study_form where uuid = ?", (uuid,))
+
 def get_speciality():
 	result = db_exec_sql("select uuid, code, name, description from speciality")
 	return result
@@ -66,7 +79,14 @@ def get_belongs(uuid):
 
 def insert_delete_btn(uuid, func_name):
 	text =  u""
-	text += u"<div class=\"delete_button\"><button onClick=\"javascript:%s('%s')\">Удалить</button></div></div>" % (func_name, uuid,)
+	text += u"""
+	<div class="delete_button">
+		<form action="" method="post">
+			<input type="hidden" name="uuid" value="%s"/>
+			<input type=submit value="Удалить"/>
+		</form>
+	</div>
+	""" % (uuid)
   	return text
 
 def gen_table_row(name, value ):
@@ -193,8 +213,8 @@ study_form_page=header_include + menu_include + u"""
 	  <div id="study_form_admin" class="UI_tab" >
 	  <h2>Управление списком форм обучения</h2>
 	  <div class="add_form">
-	  <form id="study_form_add_form" action="javascript:add_study_form()">
-	    <input id="study_form_name">
+	  <form id="study_form_add_form" method="post" action="">
+	    <input name="study_form_name">
 	    <input type=submit value="Добавить">
 	  </form>
 	  </div>
@@ -250,13 +270,21 @@ if "authors" in form:
 	exit(0)
 if "study_form" in form:
 	header_html()
+	if is_post():
+		if "study_form_name" in form:
+			study_form_name = cgi.escape(form.getfirst("study_form_name",""))
+			add_study_form(study_form_name)
+		if "uuid" in form:
+			uuid = cgi.escape(form.getfirst("uuid",""))
+			del_study_form(uuid)
 	result=get_study_form()
 	table = u""
 	for i in result:
 		table+=u"<div class=\"list_element\"><table>"
 		table+=gen_table_row(u"Форма обучения", i[1])
-		table+=u"</table>";
+		table+=u"</table>"
 		table+=insert_delete_btn(i[0],"study_form=delete")
+		table+=u"</div>"
 	page = study_form_page % (table, )
 	print_ui(page)
 	exit(0)
@@ -289,6 +317,7 @@ if "speciality" in form:
 	page = speciality_page % (table, )
 	print_ui(page)
 	exit(0)
+
 header_html()
 print_ui(main_page )
 exit(0)
@@ -391,34 +420,6 @@ exit(0)
 #			cursor.execute("delete from speciality where uuid = ?", (t,))
 #			conn.commit()
 #			js=json.dumps({"error": 0, "speciality": cursor.fetchall()})
-#			conn.close()
-#			print_header()
-#			print js
-#		else:
-#			print_header()
-#			print json.dumps({"error": 1 })
-#	if form["query"].value == "add_study_form":
-#		if "name" in form:
-#			conn = db_open()
-#			cursor = conn.cursor()
-#			t = form["name"].value
-#			cursor.execute("insert into study_form (uuid, study_form) select *, ? from next_uuid", (str(t).decode('utf-8'),))
-#			conn.commit()
-#			js=json.dumps({"error": 0, "study_form": cursor.fetchall()})
-#			conn.close()
-#			print_header()
-#			print js
-#		else:
-#			print_header()
-#			print json.dumps({"error": 1 })
-#	if form["query"].value == "delete_study_form":
-#		if "uuid" in form:
-#			conn = db_open()
-#			cursor = conn.cursor()
-#			t = form["uuid"].value
-#			cursor.execute("delete from study_form where uuid = ?", (t,))
-#			conn.commit()
-#			js=json.dumps({"error": 0, "study_form": cursor.fetchall()})
 #			conn.close()
 #			print_header()
 #			print js
