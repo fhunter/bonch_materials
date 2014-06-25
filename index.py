@@ -73,6 +73,12 @@ def get_speciality():
 	result = db_exec_sql("select uuid, code, name, description from speciality")
 	return result
 
+def add_speciality(speciality_code,speciality_name,speciality_description):
+	db_exec_sql("insert into speciality (uuid, name, code, description) select *, ?, ?, ? from next_uuid", (str(speciality_name).decode('utf-8'),str(speciality_code).decode('utf-8'),str(speciality_description).decode('utf-8'),))
+
+def del_speciality(uuid):
+	db_exec_sql("delete from speciality where uuid = ?", (uuid,))
+
 def get_belongs(uuid):
 	result = db_exec_sql("select authorship.author_uuid, authors.fio from authorship,authors where authorship.material_uuid = ? and authors.uuid = authorship.author_uuid", (uuid,))
 	return result
@@ -305,6 +311,15 @@ if "discipline" in form:
 	exit(0)
 if "speciality" in form:
 	header_html()
+	if is_post():
+		if ("speciality_code" in form) and ("speciality_name" in form):
+			speciality_code = cgi.escape(form.getfirst("speciality_code",""))
+			speciality_name = cgi.escape(form.getfirst("speciality_name",""))
+			speciality_description = cgi.escape(form.getfirst("speciality_description",""))
+			add_speciality(speciality_code,speciality_name,speciality_description)
+		if "uuid" in form:
+			uuid = cgi.escape(form.getfirst("uuid",""))
+			del_speciality(uuid)
 	result=get_speciality()
 	table = u""
 	for i in result:
@@ -314,6 +329,7 @@ if "speciality" in form:
 		table += gen_table_row_wide( u"Описание", i[3] );
 		table += "</table>";
 		table += insert_delete_btn( i[0], "speciality=delete" );
+		table += "</div>"
 	page = speciality_page % (table, )
 	print_ui(page)
 	exit(0)
@@ -387,39 +403,6 @@ exit(0)
 #			cursor.execute("delete from authors where uuid = ?", (t,))
 #			conn.commit()
 #			js=json.dumps({"error": 0, "authors": cursor.fetchall()})
-#			conn.close()
-#			print_header()
-#			print js
-#		else:
-#			print_header()
-#			print json.dumps({"error": 1 })
-#	if form["query"].value == "add_speciality":
-#		if "name" in form and "code" in form:
-#			conn = db_open()
-#			cursor = conn.cursor()
-#			t1 = form["name"].value
-#			t2 = form["code"].value
-#			if "desc" in form:
-#				t3 = form["desc"].value
-#			else:
-#				t3 = ""
-#			cursor.execute("insert into speciality (uuid, name, code, description) select *, ?, ?, ? from next_uuid", (str(t1).decode('utf-8'),str(t2).decode('utf-8'),str(t3).decode('utf-8'),))
-#			conn.commit()
-#			js=json.dumps({"error": 0, "speciality": cursor.fetchall()})
-#			conn.close()
-#			print_header()
-#			print js
-#		else:
-#			print_header()
-#			print json.dumps({"error": 1 })
-#	if form["query"].value == "delete_speciality":
-#		if "uuid" in form:
-#			conn = db_open()
-#			cursor = conn.cursor()
-#			t = form["uuid"].value
-#			cursor.execute("delete from speciality where uuid = ?", (t,))
-#			conn.commit()
-#			js=json.dumps({"error": 0, "speciality": cursor.fetchall()})
 #			conn.close()
 #			print_header()
 #			print js
