@@ -17,14 +17,6 @@ function add_author(){
   load_authors()
 }
 
-function add_speciality(){
-  var name = document.getElementById("speciality_name").value;
-  var code = document.getElementById("speciality_code").value;
-  var desc = document.getElementById("speciality_description").value;
-  fetch_json( "query=add_speciality&name="+name+"&code="+code+"&desc="+desc );
-  load_specialities()
-}
-
 function add_discipline(){
   var name = document.getElementById("discipline_name").value;
   var sem = document.getElementById("discipline_semester").value;
@@ -41,11 +33,6 @@ function delete_material(uuid){
 function delete_author(uuid){
   fetch_json( "query=delete_author&uuid="+uuid );
   load_authors()
-}
-
-function delete_speciality(uuid){
-  fetch_json( "query=delete_speciality&uuid="+uuid );
-  load_specialities()
 }
 
 function delete_discipline(uuid){
