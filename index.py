@@ -269,6 +269,13 @@ if "material" in form:
 	exit(0)
 if "authors" in form:
 	header_html()
+	if is_post():
+		if "authors_name" in form:
+			authors_name = cgi.escape(form.getfirst("authors_name",""))
+			add_authors(authors_name)
+		if "uuid" in form:
+			uuid = cgi.escape(form.getfirst("uuid",""))
+			del_authors(uuid)
 	result = get_authors()
 	table = u""
 	for i in result:
