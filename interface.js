@@ -33,12 +33,6 @@ function add_discipline(){
   load_disciplines()
 }
 
-function add_study_form(){
-  var name = document.getElementById("study_form_name").value;
-  fetch_json( "query=add_study_form&name="+name);
-  load_study_forms()
-}
-
 function delete_material(uuid){
   fetch_json( "query=delete_material&uuid="+uuid );
   load_materials()
@@ -58,9 +52,3 @@ function delete_discipline(uuid){
   fetch_json( "query=delete_discipline&uuid="+uuid );
   load_disciplines()
 }
-
-function delete_study_form(uuid){
-  fetch_json( "query=delete_study_form&uuid="+uuid );
-  load_study_forms()
-}
-
