@@ -120,8 +120,8 @@ main_page= header_include + menu_include + u"""
 	<div id="material_admin" class="UI_tab" >
 	  <h2>Учебные материалы, список</h2>
 	  <div class="add_form">
-	  <form id="material_add_form" action="javascript:add_material()">
-	    <input id="material_name">
+	  <form id="material_add_form" method="post" action="">
+	    <input name="material_name">
 	    <input type=submit value="Добавить">
 	  </form>
 	  </div>
@@ -142,8 +142,8 @@ authors_page=header_include + menu_include + u"""
 	<div id="author_admin" class="UI_tab" >
 	  <h2>Управление списком авторов</h2>
 	  <div class="add_form">
-	  <form id="author_add_form" action="javascript:add_author()">
-	    <input id="authors_name">
+	  <form id="author_add_form" method="post" action="">
+	    <input name="authors_name">
 	    <input type=submit value="Добавить">
 	  </form>
 	  </div>
@@ -164,11 +164,11 @@ discipline_page=header_include + menu_include + u"""
 	<div id="discipline_admin" class="UI_tab" >
 	  <h2>Управление списком дисциплин</h2>
 	  <div class="add_form">
-	  <form id="discipline_add_form" action="javascript:add_discipline()">
-	    Название:<input id="discipline_name"><br>
-	    Семестр:<input id="discipline_semester"><br>
+	  <form id="discipline_add_form" method="post" action="">
+	    Название:<input name="discipline_name"><br>
+	    Семестр:<input name="discipline_semester"><br>
 	    Описание:<br>
-	    <textarea id="discipline_description"></textarea>
+	    <textarea name="discipline_description"></textarea>
 	    <br>
 	    <input type=submit value="Добавить">
 	  </form>
@@ -189,11 +189,11 @@ speciality_page=header_include + menu_include + u"""
 	<div id="speciality_admin" class="UI_tab" >
 	  <h2>Управление списком специальностей</h2>
 	  <div class="add_form">
-	  <form id="speciality_add_form" action="javascript:add_speciality()">
-	    Шифр:<input id="speciality_code"><br>
-	    Название:<input id="speciality_name"><br>
+	  <form id="speciality_add_form" method="post" action="">
+	    Шифр:<input name="speciality_code"><br>
+	    Название:<input name="speciality_name"><br>
 	    Описание<br>
-	    <textarea id="speciality_description"></textarea><br>
+	    <textarea name="speciality_description"></textarea><br>
 	    <input type=submit value="Добавить">
 	  </form>
 	  </div>
