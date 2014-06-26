@@ -95,16 +95,24 @@ def get_belongs(uuid):
 	result = db_exec_sql("select authorship.author_uuid, authors.fio from authorship,authors where authorship.material_uuid = ? and authors.uuid = authorship.author_uuid", (uuid,))
 	return result
 
-def insert_delete_btn(uuid, func_name):
+def insert_edit_delete_btn(uuid, func_name):
 	text =  u""
 	text += u"""
+	<div class="edit_button">
+		<form action="" method="post">
+			<input type="hidden" name="uuid" value="%s"/>
+			<input type="hidden" name="action" value="edit"/>
+			<input type=submit value="Редактировать"/>
+		</form>
+	</div>
 	<div class="delete_button">
 		<form action="" method="post">
 			<input type="hidden" name="uuid" value="%s"/>
+			<input type="hidden" name="action" value="delete"/>
 			<input type=submit value="Удалить"/>
 		</form>
 	</div>
-	""" % (uuid)
+	""" % (uuid, uuid)
   	return text
 
 def gen_table_row(name, value ):
@@ -127,7 +135,7 @@ def gen_table(values, names, wide):
 			else:
 				table += gen_table_row( names[j], i[j+1])
 		table += "</table>"
-		table += insert_delete_btn( uuid, "" )
+		table += insert_edit_delete_btn( uuid, "" )
 		table += "</div>"
 	return table
 
@@ -282,7 +290,7 @@ if "material" in form:
 			table += gen_table_row( u"Автор", j[1])
 		table += gen_table_row_wide( u"Описание", i[2])
 		table += "</table>"
-		table += insert_delete_btn(i[0], "delete_material")
+		table += insert_edit_delete_btn(i[0], "delete_material")
 	page = main_page % (table, )
 	print_ui(page )
 	exit(0)
