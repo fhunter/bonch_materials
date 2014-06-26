@@ -1,4 +1,5 @@
 # vim: set fileencoding=utf-8 :
+import cgi
 from my_db import *
 from my_html import *
 
