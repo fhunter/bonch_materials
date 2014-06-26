@@ -5,47 +5,11 @@ import cgitb
 import sqlite3
 import os
 import sys
-
 cgitb.enable()
 
-def is_post():
-	if os.environ['REQUEST_METHOD'] == 'POST':
-		return True
-	return False
+from my_db import *
+from my_html import *
 
-def db_open():
-	conn = sqlite3.connect("materials.sqlite")
-	conn.execute('pragma foreign_keys = on')
-	return conn
-
-def db_exec_sql(*request):
-	if len(request)<1:
-		return None
-	conn = db_open()
-	cursor = conn.cursor()
-	if len(request)==1:
-		cursor.execute(request[0])
-	else:
-		cursor.execute(request[0],request[1])
-	result=cursor.fetchall()
-	conn.commit()
-	conn.close()
-	return result
-	
-
-def header_html():
-        print "Content-type: text/html"
-        print ""
-
-def header_txt():
-        print "Content-type: text/plain"
-        print ""
-
-def print_ui(page):
-        print """<html><head><meta http-equiv="Content-Type" content="text/html;charset=utf8"></head><body>
-	<link rel="stylesheet" type="text/css" href="style.css" /><title>Система управления учебными материалами</title>"""
-        print page.encode('utf-8')
-	print """</body></html>"""
 
 def get_materials():
 	result = db_exec_sql("select uuid, name,description,owner, upload_date, edit_date from materials")
@@ -94,50 +58,6 @@ def del_speciality(uuid):
 def get_belongs(uuid):
 	result = db_exec_sql("select authorship.author_uuid, authors.fio from authorship,authors where authorship.material_uuid = ? and authors.uuid = authorship.author_uuid", (uuid,))
 	return result
-
-def insert_edit_delete_btn(uuid, func_name):
-	text =  u""
-	text += u"""
-	<div class="edit_button">
-		<form action="" method="post">
-			<input type="hidden" name="uuid" value="%s"/>
-			<input type="hidden" name="action" value="edit"/>
-			<input type=submit value="Редактировать"/>
-		</form>
-	</div>
-	<div class="delete_button">
-		<form action="" method="post">
-			<input type="hidden" name="uuid" value="%s"/>
-			<input type="hidden" name="action" value="delete"/>
-			<input type=submit value="Удалить"/>
-		</form>
-	</div>
-	""" % (uuid, uuid)
-  	return text
-
-def gen_table_row(name, value ):
-	text = u"<tr><td class=field_name>%s</td><td class=field_value>%s</td></tr>" % (name, value, )
-	return text
-
-def gen_table_row_wide( name, value ):
-	text = u"<tr><td class=field_name>%s</td></tr><tr><td class=field_value colspan=2>%s</td></tr>" %( name, value, )
-	return text
-
-def gen_table(values, names, wide):
-	table = u""
-	for i in values:
-		table += "<div class=\"list_element\">"
-		table += "<table>"
-		uuid = i[0]
-		for j in range(0,len(names)):
-			if(wide[j]):
-				table += gen_table_row_wide( names[j], i[j+1])
-			else:
-				table += gen_table_row( names[j], i[j+1])
-		table += "</table>"
-		table += insert_edit_delete_btn( uuid, "" )
-		table += "</div>"
-	return table
 
 header_include= u"""
     <div id="container">
