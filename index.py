@@ -10,6 +10,10 @@ cgitb.enable()
 from my_db import *
 from my_html import *
 from my_speciality import *
+from my_author import *
+from my_study_form import *
+from my_discipline import *
+from my_material import *
 
 
 def get_materials():
