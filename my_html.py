@@ -1,4 +1,22 @@
 # vim: set fileencoding=utf-8 :
+import os
+
+header_include= u"""
+    <div id="container">
+      <div id="header">
+	<h1>Система управления учебными материалами</h1>
+      </div>
+"""
+
+menu_include = u"""
+      <div id="menu">
+	<a href="./?page=material">  <button>Материалы</button></a>
+	<a href="./?page=authors">   <button>Авторы</button></a>
+	<a href="./?page=discipline"><button>Дисциплины</button></a>
+	<a href="./?page=speciality"><button>Специальности</button></a>
+	<a href="./?page=study_form"><button>Формы обучения</button></a>
+      </div>
+"""
 
 def is_post():
 	if os.environ['REQUEST_METHOD'] == 'POST':
