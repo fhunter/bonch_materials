@@ -1,4 +1,5 @@
 # vim: set fileencoding=utf-8 :
+import cgi
 from my_db import *
 from my_html import *
 
@@ -27,21 +28,27 @@ def get_authors():
 	result = db_exec_sql("select uuid, fio from authors")
 	return result
 
-def add_authors(name):
-	db_exec_sql("insert into authors (uuid, fio) select *, ? from next_uuid", (str(name).decode('utf-8'),))
+def add_authors(form):
+	if "authors_name" in form:
+		authors_name = cgi.escape(form.getfirst("authors_name",""))
+		db_exec_sql("insert into authors (uuid, fio) select *, ? from next_uuid", (str(authors_name).decode('utf-8'),))
 
-def del_authors(uuid):
-	db_exec_sql("delete from authors where uuid = ?", (uuid,))
+def del_authors(form):
+	if "uuid" in form:
+		uuid = cgi.escape(form.getfirst("uuid",""))
+		db_exec_sql("delete from authors where uuid = ?", (uuid,))
+
+def edit_authors(form):
+	pass
+
+authors_case = { "edit": edit_authors, "delete": del_authors, "add": add_authors }
 
 def authors_showui(form):
 	header_html()
 	if is_post():
-		if "authors_name" in form:
-			authors_name = cgi.escape(form.getfirst("authors_name",""))
-			add_authors(authors_name)
-		if "uuid" in form:
-			uuid = cgi.escape(form.getfirst("uuid",""))
-			del_authors(uuid)
+		action = form.getfirst("action","")
+		if action in authors_case:
+			authors_case[action](form)
 	result = get_authors()
 	table = gen_table(result, (u"ФИО автора",),(False,))
 	page = authors_page % (table, )
