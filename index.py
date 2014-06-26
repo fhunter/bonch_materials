@@ -115,6 +115,22 @@ def gen_table_row_wide( name, value ):
 	text = u"<tr><td class=field_name>%s</td></tr><tr><td class=field_value colspan=2>%s</td></tr>" %( name, value, )
 	return text
 
+def gen_table(values, names, wide):
+	table = u""
+	for i in values:
+		table += "<div class=\"list_element\">"
+		table += "<table>"
+		uuid = i[0]
+		for j in range(0,len(names)):
+			if(wide[j]):
+				table += gen_table_row_wide( names[j], i[j+1])
+			else:
+				table += gen_table_row( names[j], i[j+1])
+		table += "</table>"
+		table += insert_delete_btn( uuid, "" )
+		table += "</div>"
+	return table
+
 header_include= u"""
     <div id="container">
       <div id="header">
@@ -134,7 +150,6 @@ menu_include = u"""
 
 main_page= header_include + menu_include + u"""
       <div id="UI_elements">
-
 	<div id="material_admin" class="UI_tab" >
 	  <h2>Учебные материалы, список</h2>
 	  <div class="add_form">
@@ -156,7 +171,6 @@ main_page= header_include + menu_include + u"""
 
 authors_page=header_include + menu_include + u"""
       <div id="UI_elements">
-
 	<div id="author_admin" class="UI_tab" >
 	  <h2>Управление списком авторов</h2>
 	  <div class="add_form">
@@ -178,7 +192,6 @@ authors_page=header_include + menu_include + u"""
 
 discipline_page=header_include + menu_include + u"""
       <div id="UI_elements">
-
 	<div id="discipline_admin" class="UI_tab" >
 	  <h2>Управление списком дисциплин</h2>
 	  <div class="add_form">
@@ -283,13 +296,7 @@ if "authors" in form:
 			uuid = cgi.escape(form.getfirst("uuid",""))
 			del_authors(uuid)
 	result = get_authors()
-	table = u""
-	for i in result:
-		table += "<div class=\"list_element\">"
-		table += "<table>"
-		table += gen_table_row( u"ФИО автора", i[1] )
-		table += "</table>"
-		table += insert_delete_btn( i[0], "author=delete")
+	table = gen_table(result, (u"ФИО автора",),(False,))
 	page = authors_page % (table, )
 	print_ui(page)
 	exit(0)
@@ -303,13 +310,7 @@ if "study_form" in form:
 			uuid = cgi.escape(form.getfirst("uuid",""))
 			del_study_form(uuid)
 	result=get_study_form()
-	table = u""
-	for i in result:
-		table+=u"<div class=\"list_element\"><table>"
-		table+=gen_table_row(u"Форма обучения", i[1])
-		table+=u"</table>"
-		table+=insert_delete_btn(i[0],"study_form=delete")
-		table+=u"</div>"
+	table = gen_table(result, (u"Форма обучение",),(False,))
 	page = study_form_page % (table, )
 	print_ui(page)
 	exit(0)
@@ -325,16 +326,7 @@ if "discipline" in form:
 			uuid = cgi.escape(form.getfirst("uuid",""))
 			del_discipline(uuid)
 	result=get_discipline()
-	table = u""
-	for i in result:
-		table += "<div class=\"list_element\">"
-		table += "<table>"
-		table += gen_table_row( u"Название", i[1] )
-		table += gen_table_row( u"Семестр", i[2] )
-		table += gen_table_row_wide( u"Описание", i[3] )
-		table += "</table>"
-		table += insert_delete_btn( i[0], "discipline=delete" )
-		table += "</div>"
+	table = gen_table(result, (u"Название",u"Семестр",u"Описание"),(False,False,True))
 	page = discipline_page % (table, )
 	print_ui(page)
 	exit(0)
@@ -350,15 +342,7 @@ if "speciality" in form:
 			uuid = cgi.escape(form.getfirst("uuid",""))
 			del_speciality(uuid)
 	result=get_speciality()
-	table = u""
-	for i in result:
-		table += u"<div class=\"list_element\"><table>"
-		table += gen_table_row( u"Шифр", i[1] )
-		table += gen_table_row( u"Название", i[2] )
-		table += gen_table_row_wide( u"Описание", i[3] );
-		table += "</table>";
-		table += insert_delete_btn( i[0], "speciality=delete" );
-		table += "</div>"
+	table = gen_table(result, (u"Шифр",u"Название",u"Описание"),(False,False,True))
 	page = speciality_page % (table, )
 	print_ui(page)
 	exit(0)
@@ -367,15 +351,3 @@ header_html()
 print_ui(main_page )
 exit(0)
 
-#	if form["query"].value == "add_material":
-#		print_header()
-#		print "Здесь должна быть заливка и проверка материалов"
-#	if form["query"].value == "delete_material":
-#		print_header()
-#		print "Здесь должно быть удаление материалов"
-#	if form["query"].value == "add_belongs":
-#		print_header()
-#		print "Здесь должна быть обработка принадлежности"
-#	if form["query"].value == "delete_belongs":
-#		print_header()
-#		print "Здесь должна быть обработка удаления принадлежности"
