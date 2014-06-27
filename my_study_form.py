@@ -30,21 +30,27 @@ def get_study_form():
 	result = db_exec_sql("select uuid, study_form from study_form")
 	return result
 
-def add_study_form(name):
-	db_exec_sql("insert into study_form (uuid, study_form) select *, ? from next_uuid", (str(name).decode('utf-8'),))
+def add_study_form(form):
+	if "study_form_name" in form:
+		name = cgi.escape(form.getfirst("study_form_name",""))
+		db_exec_sql("insert into study_form (uuid, study_form) select *, ? from next_uuid", (str(name).decode('utf-8'),))
 
-def del_study_form(uuid):
-	db_exec_sql("delete from study_form where uuid = ?", (uuid,))
+def del_study_form(form):
+	if "uuid" in form:
+		uuid = cgi.escape(form.getfirst("uuid",""))
+		db_exec_sql("delete from study_form where uuid = ?", (uuid,))
+
+def edit_study_form(form):
+	pass
+
+study_form_case = { "edit": edit_study_form, "delete": del_study_form, "add": add_study_form }
 
 def study_form_showui(form):
 	header_html()
 	if is_post():
-		if "study_form_name" in form:
-			study_form_name = cgi.escape(form.getfirst("study_form_name",""))
-			add_study_form(study_form_name)
-		if "uuid" in form:
-			uuid = cgi.escape(form.getfirst("uuid",""))
-			del_study_form(uuid)
+		action = form.getfirst("action","")
+		if action in study_form_case:
+			study_form_case[action](form)
 	result=get_study_form()
 	table = gen_table(result, (u"Форма обучение",),(False,))
 	page = study_form_page % (table, )
