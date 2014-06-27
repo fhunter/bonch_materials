@@ -15,7 +15,7 @@ study_form_page=header_include + menu_include + u"""
 	  </form>
 	  </div>
 	  <div class="refresh_button">
-	  <a href="./?study_form=show">  <button>Обновить</button></a>
+	  <a href="./?page=study_form">  <button>Обновить</button></a>
 	  </div>
 	  <div id="study_form_list" class="UI_list">
 	  %s
