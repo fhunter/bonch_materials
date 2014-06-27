@@ -9,6 +9,7 @@ main_page= header_include + menu_include + u"""
 	  <h2>Учебные материалы, список</h2>
 	  <div class="add_form">
 	  <form id="material_add_form" method="post" action="">
+	    <input type="hidden" name="action" value="add"/>
 	    <input name="material_name">
 	    <input type=submit value="Добавить">
 	  </form>

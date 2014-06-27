@@ -9,6 +9,7 @@ authors_page=header_include + menu_include + u"""
 	  <h2>Управление списком авторов</h2>
 	  <div class="add_form">
 	  <form id="author_add_form" method="post" action="">
+	    <input type="hidden" name="action" value="add"/>
 	    <input name="authors_name">
 	    <input type=submit value="Добавить">
 	  </form>

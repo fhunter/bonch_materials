@@ -9,6 +9,7 @@ study_form_page=header_include + menu_include + u"""
 	  <h2>Управление списком форм обучения</h2>
 	  <div class="add_form">
 	  <form id="study_form_add_form" method="post" action="">
+	    <input type="hidden" name="action" value="add"/>
 	    <input name="study_form_name">
 	    <input type=submit value="Добавить">
 	  </form>
