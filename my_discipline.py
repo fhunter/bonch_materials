@@ -51,7 +51,6 @@ def edit_discipline(form):
 discipline_case = { "edit": edit_discipline, "delete": del_discipline, "add": add_discipline }
 
 def discipline_showui(form):
-	header_html()
 	if is_post():
 		action = form.getfirst("action","")
 		if action in discipline_case:

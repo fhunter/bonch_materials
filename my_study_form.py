@@ -43,17 +43,18 @@ def del_study_form(form):
 def edit_study_form(form):
 	pass
 
-study_form_case = { "edit": edit_study_form, "delete": del_study_form, "add": add_study_form }
-
-def study_form_showui(form):
-	header_html()
-	if is_post():
-		action = form.getfirst("action","")
-		if action in study_form_case:
-			study_form_case[action](form)
+def study_form_mainpage():
 	result=get_study_form()
 	table = gen_table(result, (u"Форма обучение",),(False,))
 	page = study_form_page % (table, )
 	print_ui(page)
-	
+
+study_form_case = { "edit": edit_study_form, "delete": del_study_form, "add": add_study_form }
+
+def study_form_showui(form):
+	if is_post():
+		action = form.getfirst("action","")
+		if action in study_form_case:
+			study_form_case[action](form)
+	study_form_mainpage()
 

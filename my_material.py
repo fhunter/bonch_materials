@@ -30,7 +30,6 @@ def get_materials():
 	return result
 
 def material_showui(form):
-	header_html()
 	result=get_materials()
 	table = u""
 	for i in result:

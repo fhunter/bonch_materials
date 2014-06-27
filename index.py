@@ -20,6 +20,7 @@ uipage_case = { "material": material_showui, "authors": authors_showui, "discipl
 
 form = cgi.FieldStorage()
 
+header_html()
 if "page" in form:
 	page = form.getfirst("page","")
 	if page in uipage_case:

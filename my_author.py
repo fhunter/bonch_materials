@@ -45,7 +45,6 @@ def edit_authors(form):
 authors_case = { "edit": edit_authors, "delete": del_authors, "add": add_authors }
 
 def authors_showui(form):
-	header_html()
 	if is_post():
 		action = form.getfirst("action","")
 		if action in authors_case:

@@ -52,7 +52,6 @@ def edit_speciality(form):
 speciality_case = { "edit": edit_speciality, "delete": del_speciality, "add": add_speciality }
 
 def speciality_showui(form):
-	header_html()
 	if is_post():
 		action = form.getfirst("action","")
 		if action in speciality_case:
