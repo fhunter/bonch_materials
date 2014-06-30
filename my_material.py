@@ -29,7 +29,28 @@ def get_materials():
 	result = db_exec_sql("select uuid, name,description,owner, upload_date, edit_date from materials")
 	return result
 
+def add_material(form):
+	if ("discipline_name" in form) and ("discipline_semester" in form):
+		name = cgi.escape(form.getfirst("discipline_name",""))
+		semester = cgi.escape(form.getfirst("discipline_semester",""))
+		description = cgi.escape(form.getfirst("discipline_description",""))
+		db_exec_sql("insert into discipline (uuid, name, semester, description) select *, ?, ?, ? from next_uuid", (str(name).decode('utf-8'),str(semester).decode('utf-8'),str(description).decode('utf-8'),))
+
+def del_material(form):
+	if "uuid" in form:
+		uuid = cgi.escape(form.getfirst("uuid",""))
+		db_exec_sql("delete from discipline where uuid = ?", (uuid,))
+
+def edit_material(form):
+	pass
+
+material_case = { "edit": edit_material, "delete": del_material, "add": add_material }
+
 def material_showui(form):
+	if is_post():
+		action = form.getfirst("action","")
+		if action in material_case:
+			material_case[action](form)
 	result=get_materials()
 	table = u""
 	for i in result:
