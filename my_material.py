@@ -30,16 +30,22 @@ def get_materials():
 	return result
 
 def add_material(form):
-	if ("discipline_name" in form) and ("discipline_semester" in form):
-		name = cgi.escape(form.getfirst("discipline_name",""))
-		semester = cgi.escape(form.getfirst("discipline_semester",""))
-		description = cgi.escape(form.getfirst("discipline_description",""))
-		db_exec_sql("insert into discipline (uuid, name, semester, description) select *, ?, ?, ? from next_uuid", (str(name).decode('utf-8'),str(semester).decode('utf-8'),str(description).decode('utf-8'),))
+	if ("material_name" in form):
+		name = cgi.escape(form.getfirst("material_name",""))
+		owner = os.environ["REMOTE_USER"]
+		db_exec_sql("insert into materials (uuid, name, owner) select *, ?, ? from next_uuid", (str(name).decode('utf-8'), owner))
 
 def del_material(form):
 	if "uuid" in form:
 		uuid = cgi.escape(form.getfirst("uuid",""))
-		db_exec_sql("delete from discipline where uuid = ?", (uuid,))
+		db_exec_sql("delete from materials where uuid = ?", (uuid,))
+		path = 'materials' + uuid.replace('{','/').replace('}','')
+		if os.path.isdir(path):
+			for j in os.listdir(path):
+				if os.path.isfile(path + "/" + j):
+					os.remove(path + "/" + j)
+			os.rmdir(path)
+
 
 def edit_material(form):
 	pass
@@ -54,7 +60,7 @@ def material_showui(form):
 	result=get_materials()
 	table = u""
 	for i in result:
-		table += "<div class=\"list_element\">"
+		table += """<div class="list_element">"""
 		table += "<table>"
 		table += gen_table_row( u"Название" , i[1])
 		table += gen_table_row( u"Дата заливки" , i[4])
@@ -67,6 +73,12 @@ def material_showui(form):
 		for j in tmp:
 			table += gen_table_row( u"Автор", j[1])
 		table += gen_table_row_wide( u"Описание", i[2])
+		path = 'materials' + i[0].replace('{','/').replace('}','')
+		if os.path.isdir(path):
+			for j in os.listdir(path):
+				if os.path.isfile(path + "/" + j):
+					html = u"""<a href="%s/%s">%s</a>""" % ( path, j, j,)
+					table += gen_table_row( u"Файлы", html + u" " + unicode(os.path.getsize(path + "/" + j)/(1024*1024)) + u"Мб" )
 		table += "</table>"
 		table += insert_edit_delete_btn(i[0], "delete_material")
 	page = main_page % (table, )
