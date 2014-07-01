@@ -15,10 +15,35 @@ main_page= header_include + menu_include + u"""
 	  </form>
 	  </div>
 	  <div class="refresh_button">
-	  <a href="./?material=show">  <button>Обновить</button></a>
+	  <a href="./?page=material">  <button>Обновить</button></a>
 	  </div>
 	  <div id="material_list" class="UI_list">
 	  %s
+	  </div>
+	</div>
+	</div>
+	</div>
+	"""
+
+material_edit = header_include + menu_include + u"""
+      <div id="UI_elements">
+	<div id="material_admin" class="UI_tab" >
+	  <h2>Редактирование учебного материала</h2>
+	  <div class="add_form">
+	  <form id="material_add_form" method="post" action="">
+	    <input type="hidden" name="action" value="update"/>
+	    <input type="hidden" name="uuid" value="%s"/>
+	    Название:<input name="material_name" value="%s"><br>
+	    Дата заливки: %s<br>
+	    Дата последнего редактирования: %s<br>
+	    Описание: %s<br>
+	    Владелец: %s<br>
+	    <input type="file" name="attach" accept="*" /><br>
+	    <input type=submit value="Обновить">
+	  </form>
+	  </div>
+	  <div class="refresh_button">
+	  <a href="./?page=material">  <button>Обновить</button></a>
 	  </div>
 	</div>
 	</div>
@@ -48,7 +73,13 @@ def del_material(form):
 
 
 def edit_material(form):
-	pass
+	if "uuid" in form:
+		uuid = cgi.escape(form.getfirst("uuid",""))
+		material = db_exec_sql("select uuid, name, description, owner, upload_date, edit_date from materials where uuid = ?", (uuid,))
+		material= material[0]
+		page = material_edit % (material[0],material[1],material[4],material[5],material[2],material[3])
+		print_ui(page )
+		exit(0)
 
 material_case = { "edit": edit_material, "delete": del_material, "add": add_material }
 
