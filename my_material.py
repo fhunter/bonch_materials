@@ -71,6 +71,9 @@ def del_material(form):
 					os.remove(path + "/" + j)
 			os.rmdir(path)
 
+def update_material(form):
+	#TODO: Add updating material and creation of file data
+	pass
 
 def edit_material(form):
 	if "uuid" in form:
@@ -81,7 +84,7 @@ def edit_material(form):
 		print_ui(page )
 		exit(0)
 
-material_case = { "edit": edit_material, "delete": del_material, "add": add_material }
+material_case = { "edit": edit_material, "delete": del_material, "add": add_material, "update": update_material }
 
 def material_showui(form):
 	if is_post():
