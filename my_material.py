@@ -30,7 +30,7 @@ material_edit = header_include + menu_include + u"""
 	<div id="material_admin" class="UI_tab" >
 	  <h2>Редактирование учебного материала</h2>
 	  <div class="add_form">
-	  <form id="material_add_form" method="post" action="">
+	  <form id="material_add_form" method="post" action="" enctype="multipart/form-data">
 	    <input type="hidden" name="action" value="update"/>
 	    <input type="hidden" name="uuid" value="%s"/>
 	    Название:<input name="material_name" value="%s"><br>
@@ -38,12 +38,12 @@ material_edit = header_include + menu_include + u"""
 	    Дата последнего редактирования: %s<br>
 	    Описание: %s<br>
 	    Владелец: %s<br>
-	    <input type="file" name="attach" accept="*" /><br>
+	    Файлы:<br>
+	    %s
+	    <br>
+	    <input type="file" name="attach"  /><br>
 	    <input type=submit value="Обновить">
 	  </form>
-	  </div>
-	  <div class="refresh_button">
-	  <a href="./?page=material">  <button>Обновить</button></a>
 	  </div>
 	</div>
 	</div>
@@ -77,13 +77,25 @@ def update_material(form):
 		uuid = cgi.escape(form.getfirst("uuid",""))
 		material = db_exec_sql("select uuid, name, description, owner, upload_date, edit_date from materials where uuid = ?", (uuid,))
 		material= material[0]
+		name = material[1]
+		description = material[2]
 		if "material_name" in form:
-			material[1]= cgi.escape(form.getfirst("material_name",""))
+			name= cgi.escape(form.getfirst("material_name",""))
+			#TODO: add update statement for name
+		if "material_description" in form:
+			description = cgi.escape(form.getfirst("material_description",""))
+			#TODO: Add description update
 		if "attach" in form:
 			#TODO: Add creation of uuid directory
 			attach = form["attach"]
-			if attach.file:
+			path = 'materials' + uuid.replace('{','/').replace('}','')
+			try:
+				os.mkdir(path)
+			except:
 				pass
+			if attach.file and attach.filename !="":
+				filename=path+"/"+os.path.basename(attach.filename)
+				open(filename,"w").write(attach.file.read())
 		#TODO: add field replacements
 		#TODO: process uploads creation
 	pass
@@ -93,7 +105,8 @@ def edit_material(form):
 		uuid = cgi.escape(form.getfirst("uuid",""))
 		material = db_exec_sql("select uuid, name, description, owner, upload_date, edit_date from materials where uuid = ?", (uuid,))
 		material= material[0]
-		page = material_edit % (material[0],material[1],material[4],material[5],material[2],material[3])
+		filedata = "Here goes filenames"
+		page = material_edit % (material[0],material[1],material[4],material[5],material[2],material[3],filedata)
 		print_ui(page )
 		exit(0)
 
