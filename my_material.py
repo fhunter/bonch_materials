@@ -3,7 +3,7 @@ import cgi
 from my_db import *
 from my_html import *
 
-main_page= header_include + menu_include + u"""
+material_page= header_include + menu_include + u"""
       <div id="UI_elements">
 	<div id="material_admin" class="UI_tab" >
 	  <h2>Учебные материалы, список</h2>
@@ -73,6 +73,12 @@ def del_material(form):
 
 def update_material(form):
 	#TODO: Add updating material and creation of file data
+	if "uuid" in form:
+		uuid = cgi.escape(form.getfirst("uuid",""))
+		material = db_exec_sql("select uuid, name, description, owner, upload_date, edit_date from materials where uuid = ?", (uuid,))
+		material= material[0]
+		#TODO: add field replacements
+		#TODO: process uploads creation
 	pass
 
 def edit_material(form):
@@ -115,7 +121,7 @@ def material_showui(form):
 					table += gen_table_row( u"Файлы", html + u" " + unicode(os.path.getsize(path + "/" + j)/(1024*1024)) + u"Мб" )
 		table += "</table>"
 		table += insert_edit_delete_btn(i[0], "delete_material")
-	page = main_page % (table, )
+	page = material_page % (table, )
 	print_ui(page )
 
 
