@@ -77,6 +77,13 @@ def update_material(form):
 		uuid = cgi.escape(form.getfirst("uuid",""))
 		material = db_exec_sql("select uuid, name, description, owner, upload_date, edit_date from materials where uuid = ?", (uuid,))
 		material= material[0]
+		if "material_name" in form:
+			material[1]= cgi.escape(form.getfirst("material_name",""))
+		if "attach" in form:
+			#TODO: Add creation of uuid directory
+			attach = form["attach"]
+			if attach.file:
+				pass
 		#TODO: add field replacements
 		#TODO: process uploads creation
 	pass
