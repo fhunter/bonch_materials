@@ -36,7 +36,8 @@ material_edit = header_include + menu_include + u"""
 	    Название:<input name="material_name" value="%s"><br>
 	    Дата заливки: %s<br>
 	    Дата последнего редактирования: %s<br>
-	    Описание: %s<br>
+	    Описание:
+	    <textarea name="material_description">%s</textarea><br>
 	    Владелец: %s<br>
 	    Файлы:<br>
 	    %s
@@ -81,9 +82,11 @@ def update_material(form):
 		description = material[2]
 		if "material_name" in form:
 			name= cgi.escape(form.getfirst("material_name",""))
+			db_exec_sql("update materials set name= ?, edit_date = (datetime())  where uuid = ?", (name.decode('utf-8'), uuid,))
 			#TODO: add update statement for name
 		if "material_description" in form:
 			description = cgi.escape(form.getfirst("material_description",""))
+			db_exec_sql("update materials set description= ?, edit_date = (datetime()) where uuid = ?", (description.decode('utf-8'), uuid,))
 			#TODO: Add description update
 		if "attach" in form:
 			#TODO: Add creation of uuid directory
@@ -94,6 +97,7 @@ def update_material(form):
 			except:
 				pass
 			if attach.file and attach.filename !="":
+				db_exec_sql("update materials set edit_date = (datetime()) where uuid = ?", (uuid,))
 				filename=path+"/"+os.path.basename(attach.filename)
 				open(filename,"w").write(attach.file.read())
 		#TODO: add field replacements
