@@ -136,22 +136,37 @@ def material_showui(form):
 		else:
 			table += gen_table_row( u"Дата редактирования" , i[5])
 		table += gen_table_row( u"Заливал", i[3])
-		tmp = get_belongs(i[0])
+		tmp = get_authorship(i[0])
 		for j in tmp:
 			table += gen_table_row( u"Автор", j[1])
 		table += gen_table_row_wide( u"Описание", i[2])
+
+		belongs = get_belongs(i[0])
+		if belongs != []:
+			belongs_string = ""
+			"""
+			CREATE TABLE belongs (id integer primary key, material_uuid, speciality_uuid, student_year numeric, study_form_uuid, discipline_uuid )
+			"""
+			belongs_string += gen_table(belongs,[u"Материал", u"Специальность", u"Год", u"Форма обучения", u"Дисциплина" ], [False, False, False, False, False,])
+			table += gen_table_row(u"Принадлежность", belongs_string)
+
 		path = 'materials' + i[0].replace('{','/').replace('}','')
 		if os.path.isdir(path):
 			for j in os.listdir(path):
 				if os.path.isfile(path + "/" + j):
 					html = u"""<a href="%s/%s">%s</a>""" % ( path, j, j,)
 					table += gen_table_row( u"Файлы", html + u" " + unicode(os.path.getsize(path + "/" + j)/(1024*1024)) + u"Мб" )
+
 		table += "</table>"
 		table += insert_edit_delete_btn(i[0], "delete_material")
 	page = material_page % (table, )
 	print_ui(page )
 
 
-def get_belongs(uuid):
+def get_authorship(uuid):
 	result = db_exec_sql("select authorship.author_uuid, authors.fio from authorship,authors where authorship.material_uuid = ? and authors.uuid = authorship.author_uuid", (uuid,))
+	return result
+
+def get_belongs(uuid):
+	result = db_exec_sql("select * from belongs where material_uuid = ?", (uuid, ))
 	return result
