@@ -87,9 +87,7 @@ def update_material(form):
 		if "material_description" in form:
 			description = cgi.escape(form.getfirst("material_description",""))
 			db_exec_sql("update materials set description= ?, edit_date = (datetime()) where uuid = ?", (description.decode('utf-8'), uuid,))
-			#TODO: Add description update
 		if "attach" in form:
-			#TODO: Add creation of uuid directory
 			attach = form["attach"]
 			path = 'materials' + uuid.replace('{','/').replace('}','')
 			try:
@@ -100,16 +98,21 @@ def update_material(form):
 				db_exec_sql("update materials set edit_date = (datetime()) where uuid = ?", (uuid,))
 				filename=path+"/"+os.path.basename(attach.filename)
 				open(filename,"w").write(attach.file.read())
-		#TODO: add field replacements
-		#TODO: process uploads creation
-	pass
 
 def edit_material(form):
 	if "uuid" in form:
 		uuid = cgi.escape(form.getfirst("uuid",""))
 		material = db_exec_sql("select uuid, name, description, owner, upload_date, edit_date from materials where uuid = ?", (uuid,))
 		material= material[0]
-		filedata = "Here goes filenames"
+
+		filedata = "<table>"
+		path = 'materials' + material[0].replace('{','/').replace('}','')
+		if os.path.isdir(path):
+			for j in os.listdir(path):
+				if os.path.isfile(path + "/" + j):
+					html = u"""<a href="%s/%s">%s</a>""" % ( path, j, j,)
+					filedata += gen_table_row( u"Файлы", html + u" " + unicode(os.path.getsize(path + "/" + j)/(1024*1024)) + u"Мб" )
+		filedata += "</table>"
 		page = material_edit % (material[0],material[1],material[4],material[5],material[2],material[3],filedata)
 		print_ui(page )
 		exit(0)
