@@ -33,6 +33,10 @@ def get_speciality():
 	result = db_exec_sql("select uuid, code, name, description from speciality")
 	return result
 
+def get_speciality_by_uuid(uuid):
+	result = db_exec_sql("select name from speciality where uuid= ?", (uuid,))
+	return result
+
 def add_speciality(form):
 	if ("speciality_code" in form) and ("speciality_name" in form):
 		speciality_code = cgi.escape(form.getfirst("speciality_code",""))

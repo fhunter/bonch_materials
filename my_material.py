@@ -2,6 +2,9 @@
 import cgi
 from my_db import *
 from my_html import *
+from my_speciality import get_speciality_by_uuid
+from my_study_form import get_study_form_by_uuid
+from my_discipline import get_discipline_by_uuid
 
 material_page= header_include + menu_include + u"""
       <div id="UI_elements">
@@ -144,10 +147,12 @@ def material_showui(form):
 		belongs = get_belongs(i[0])
 		if belongs != []:
 			belongs_string = ""
-			"""
-			CREATE TABLE belongs (id integer primary key, material_uuid, speciality_uuid, student_year numeric, study_form_uuid, discipline_uuid )
-			"""
-			belongs_string += gen_table(belongs,[u"Материал", u"Специальность", u"Год", u"Форма обучения", u"Дисциплина" ], [False, False, False, False, False,])
+			#id integer primary key, speciality_uuid, student_year numeric, study_form_uuid, discipline_uuid
+			belongs1 = []
+			for j in belongs:
+				element = (j[0], get_speciality_by_uuid(j[1])[0][0],j[2],get_study_form_by_uuid(j[3])[0][0],get_discipline_by_uuid(j[4])[0][0],get_discipline_by_uuid(j[4])[0][1])
+				belongs1.append(element)
+			belongs_string += gen_table(belongs1,[ u"Специальность", u"Год", u"Форма обучения", u"Дисциплина", u"Семестр" ], [False, False, False, False, False,],False, False)
 			table += gen_table_row(u"Принадлежность", belongs_string)
 
 		path = 'materials' + i[0].replace('{','/').replace('}','')
@@ -168,5 +173,5 @@ def get_authorship(uuid):
 	return result
 
 def get_belongs(uuid):
-	result = db_exec_sql("select * from belongs where material_uuid = ?", (uuid, ))
+	result = db_exec_sql("select id,speciality_uuid, student_year, study_form_uuid, discipline_uuid from belongs where material_uuid = ?", (uuid, ))
 	return result

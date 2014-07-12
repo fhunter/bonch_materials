@@ -65,7 +65,7 @@ def gen_table_row_wide( name, value ):
 	text = u"<tr><td class=field_name>%s</td></tr><tr><td class=field_value colspan=2>%s</td></tr>" %( name, value, )
 	return text
 
-def gen_table(values, names, wide):
+def gen_table(values, names, wide,edit=True,vertical=True):
 	table = u""
 	for i in values:
 		table += "<div class=\"list_element\">"
@@ -77,7 +77,8 @@ def gen_table(values, names, wide):
 			else:
 				table += gen_table_row( names[j], i[j+1])
 		table += "</table>"
-		table += insert_edit_delete_btn( uuid, "" )
+		if edit:
+			table += insert_edit_delete_btn( uuid, "" )
 		table += "</div>"
 	return table
 
