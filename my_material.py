@@ -2,9 +2,9 @@
 import cgi
 from my_db import *
 from my_html import *
-from my_speciality import get_speciality_by_uuid
-from my_study_form import get_study_form_by_uuid
-from my_discipline import get_discipline_by_uuid
+from my_speciality import get_speciality_by_uuid,get_speciality
+from my_study_form import get_study_form_by_uuid,get_study_form
+from my_discipline import get_discipline_by_uuid,get_discipline
 from my_author import get_authors
 
 material_page= header_include + menu_include + u"""
@@ -40,8 +40,6 @@ material_edit = header_include + menu_include + u"""
 	    <input type="hidden" name="uuid" value="%s"/>
 	    %s
 	    </table>
-	    Добавить принадлежность:
-	    <br>
 	    <input type=submit value="Обновить">
 	  </form>
 	  </div>
@@ -106,7 +104,6 @@ def del_material(form):
 			os.rmdir(path)
 
 def update_material(form):
-	#TODO: Add updating material and creation of file data
 	if "uuid" in form:
 		uuid = cgi.escape(form.getfirst("uuid",""))
 		material = db_exec_sql("select uuid, name, description, owner, upload_date, edit_date from materials where uuid = ?", (uuid,))
@@ -116,7 +113,6 @@ def update_material(form):
 		if "material_name" in form:
 			name= cgi.escape(form.getfirst("material_name",""))
 			db_exec_sql("update materials set name= ?, edit_date = (datetime())  where uuid = ?", (name.decode('utf-8'), uuid,))
-			#TODO: add update statement for name
 		if "material_description" in form:
 			description = cgi.escape(form.getfirst("material_description",""))
 			db_exec_sql("update materials set description= ?, edit_date = (datetime()) where uuid = ?", (description.decode('utf-8'), uuid,))
@@ -137,6 +133,15 @@ def update_material(form):
 			author = cgi.escape(form.getfirst("author",""))
 			if author != "1":
 				db_exec_sql("insert into authorship (author_uuid, material_uuid) values (?, ?)", (author, uuid))
+		if ("speciality" in form) and ("year" in form) and ("study_form" in form) and ("discipline" in form):
+			speciality = cgi.escape(form.getfirst("speciality",""))	
+			year       = cgi.escape(form.getfirst("year",""))	
+			study_form = cgi.escape(form.getfirst("study_form",""))	
+			discipline = cgi.escape(form.getfirst("discipline",""))
+			if(speciality == '1' or year == '0' or study_form == '1' or discipline == '1'):
+			    pass
+			else:
+				db_exec_sql("insert into belongs (material_uuid, speciality_uuid, student_year, study_form_uuid, discipline_uuid ) values ( ?, ?, ?, ?, ?)", (uuid, speciality, year, study_form, discipline))
 		if "attach" in form:
 			attach = form["attach"]
 			path = 'materials' + uuid.replace('{','/').replace('}','')
@@ -172,11 +177,21 @@ def edit_material(form):
 			authorship_string += u"""<option value="%s">%s</option>""" % (j[0],j[1])
 		authorship_string += "</select>"
 		belongs_string = get_belongs_string(uuid, True)
-		belongs_string += "<select name=speciality></select><select name=year>"
+		belongs_string += "<select name=speciality><option value=1></option>"
+		for j in get_speciality():
+			belongs_string += "<option value=\"%s\">%s</option>" % (j[0], j[2])
+		belongs_string += "</select><select name=year>"
 		belongs_string += "<option value=0></option>"
 		for j in range(1,7):
 			belongs_string += "<option value=%d>%d</option>" % (j,j)
-		belongs_string += "</select><select name=study_form></select><select name=discipline></select>"
+		belongs_string += "</select><select name=study_form><option value=1></option>"
+		for j in get_study_form():
+			belongs_string += "<option value=\"%s\">%s</option>" % (j[0], j[1])
+		belongs_string += "</select><select name=discipline><option value=1></option>"
+#HERE GOES discipline + semester
+		for j in get_discipline():
+			belongs_string += "<option value=\"%s\">%s</option>" % (j[0], "%s - %s"% ( j[1], j[2]))
+		belongs_string += "</select>"
 	    	name = """<input name="material_name" value="%s">""" % material[1]
 		description = """<textarea name="material_description">%s</textarea>""" % material[2]
 		page = material_edit % (material[0],gen_table_row(u"Название",name)+gen_table_row(u"Дата заливки",material[4])+gen_table_row(u"Дата редактирования",material[5])+gen_table_row(u"Описание",description)+gen_table_row(u"Владелец",material[3])+gen_table_row(u"Авторы",authorship_string)+gen_table_row(u"Файлы",filedata)+ gen_table_row(u"Принадлежность",belongs_string))
@@ -218,6 +233,7 @@ def material_showui(form):
 
 		table += "</table>"
 		table += insert_edit_delete_btn(i[0], "delete_material")
+		table += "</div>"
 	page = material_page % (table, )
 	print_ui(page )
 
