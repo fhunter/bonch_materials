@@ -5,6 +5,7 @@ from my_html import *
 from my_speciality import get_speciality_by_uuid
 from my_study_form import get_study_form_by_uuid
 from my_discipline import get_discipline_by_uuid
+from my_author import get_authors
 
 material_page= header_include + menu_include + u"""
       <div id="UI_elements">
@@ -34,22 +35,11 @@ material_edit = header_include + menu_include + u"""
 	  <h2>Редактирование учебного материала</h2>
 	  <div class="add_form">
 	  <form id="material_add_form" method="post" action="" enctype="multipart/form-data">
+	    <table>
 	    <input type="hidden" name="action" value="update"/>
 	    <input type="hidden" name="uuid" value="%s"/>
-	    Название:<input name="material_name" value="%s"><br>
-	    Дата заливки: %s<br>
-	    Дата последнего редактирования: %s<br>
-	    Описание:
-	    <textarea name="material_description">%s</textarea><br>
-	    Владелец: %s<br>
-	    Авторы: %s<br>
-	    Файлы:<br>
 	    %s
-	    <br>Приложить файл
-	    <input type="file" name="attach"  /><br>
-	    Принадлежность: <br>
-	    %s
-	    <br>
+	    </table>
 	    Добавить принадлежность:
 	    <br>
 	    <input type=submit value="Обновить">
@@ -80,12 +70,23 @@ def get_belongs_string(uuid, editdelete = False):
 			for i in element:
 				belongs_string += "<td class=field_value>%s</td>" % i
 			if editdelete:
-				belongs_string += "<td>%s</td>" % j[0]
+				belongs_string += "<td><input type=checkbox name=del_belongs value=%s></td>" % j[0]
 			belongs_string += "</tr>"
 		belongs_string += "</table>"
 		return belongs_string
 	else:
 		return ""
+
+def get_material_files(uuid):
+	result = []
+	uuid1 = uuid.replace('..','').replace('/','').replace('{','/').replace('}','')
+	path = 'materials' + uuid1
+	if os.path.isdir(path):
+		for j in os.listdir(path):
+			if os.path.isfile(path + "/" + j):
+				temp = (path+"/"+j, j, os.path.getsize(path + "/" + j),)
+				result.append(temp)
+	return result
 
 def add_material(form):
 	if ("material_name" in form):
@@ -119,6 +120,23 @@ def update_material(form):
 		if "material_description" in form:
 			description = cgi.escape(form.getfirst("material_description",""))
 			db_exec_sql("update materials set description= ?, edit_date = (datetime()) where uuid = ?", (description.decode('utf-8'), uuid,))
+		if "del_author" in form:
+			authors_to_delete = form.getlist("del_author")
+			for author in authors_to_delete:
+				db_exec_sql("delete from authorship where author_uuid = ? and material_uuid = ?", (author, uuid))
+		if "del_file" in form:
+			files_to_delete = form.getlist("del_file")
+			for filestodel in files_to_delete:
+				filestodel = filestodel.replace('{','').replace('}','').replace('..','')
+				os.remove( "materials/"+filestodel)
+		if "del_belongs" in form:
+			belongs_to_delete = form.getlist("del_belongs")
+			for belongsdel in belongs_to_delete:
+				db_exec_sql("delete from belongs where id = ?", (belongsdel,))
+		if "author" in form:
+			author = cgi.escape(form.getfirst("author",""))
+			if author != "1":
+				db_exec_sql("insert into authorship (author_uuid, material_uuid) values (?, ?)", (author, uuid))
 		if "attach" in form:
 			attach = form["attach"]
 			path = 'materials' + uuid.replace('{','/').replace('}','')
@@ -135,23 +153,33 @@ def edit_material(form):
 	if "uuid" in form:
 		uuid = cgi.escape(form.getfirst("uuid",""))
 		material = db_exec_sql("select uuid, name, description, owner, upload_date, edit_date from materials where uuid = ?", (uuid,))
-		material= material[0]
+		material = material[0]
 
 		filedata = "<table>"
-		path = 'materials' + material[0].replace('{','/').replace('}','')
-		if os.path.isdir(path):
-			for j in os.listdir(path):
-				if os.path.isfile(path + "/" + j):
-					html = u"""<a href="%s/%s">%s</a>""" % ( path, j, j,)
-					filedata += gen_table_row( u"Файлы", html + u" " + unicode(os.path.getsize(path + "/" + j)/(1024*1024)) + u"Мб" )
-		filedata += "</table>"
+		filelist = get_material_files(material[0])
+		for i in filelist:
+			html = u"""<a href="%s">%s</a>%s Байт""" % (i[0], i[1], i[2] )
+			html += "<input type=checkbox name=del_file value=\"%s/%s\">" % (uuid, i[1])
+			filedata += gen_table_row( u"Файлы", html )
+		filedata += "</table>" + u"""<input type="file" name="attach"  />"""
 		authorship_string = ""
 		tmp = get_authorship(uuid)
 		for j in tmp:
-			authorship_string += gen_table_row( u"Автор", j[1])
+			authorship_string += gen_table_row( u"Автор", j[1] + "<input type=checkbox name=del_author value=\"%s\">" % j[0])
 		authorship_string = "<table>%s</table>" % authorship_string
+		authorship_string += "<select name=author><option value=1></option>"
+		for j in get_authors():
+			authorship_string += u"""<option value="%s">%s</option>""" % (j[0],j[1])
+		authorship_string += "</select>"
 		belongs_string = get_belongs_string(uuid, True)
-		page = material_edit % (material[0],material[1],material[4],material[5],material[2],material[3],authorship_string,filedata, belongs_string)
+		belongs_string += "<select name=speciality></select><select name=year>"
+		belongs_string += "<option value=0></option>"
+		for j in range(1,7):
+			belongs_string += "<option value=%d>%d</option>" % (j,j)
+		belongs_string += "</select><select name=study_form></select><select name=discipline></select>"
+	    	name = """<input name="material_name" value="%s">""" % material[1]
+		description = """<textarea name="material_description">%s</textarea>""" % material[2]
+		page = material_edit % (material[0],gen_table_row(u"Название",name)+gen_table_row(u"Дата заливки",material[4])+gen_table_row(u"Дата редактирования",material[5])+gen_table_row(u"Описание",description)+gen_table_row(u"Владелец",material[3])+gen_table_row(u"Авторы",authorship_string)+gen_table_row(u"Файлы",filedata)+ gen_table_row(u"Принадлежность",belongs_string))
 		print_ui(page )
 		exit(0)
 
@@ -183,12 +211,10 @@ def material_showui(form):
 		if belongs_string !="":
 			table += gen_table_row(u"Принадлежность", belongs_string)
 
-		path = 'materials' + i[0].replace('{','/').replace('}','')
-		if os.path.isdir(path):
-			for j in os.listdir(path):
-				if os.path.isfile(path + "/" + j):
-					html = u"""<a href="%s/%s">%s</a>""" % ( path, j, j,)
-					table += gen_table_row( u"Файлы", html + u" " + unicode(os.path.getsize(path + "/" + j)/(1024*1024)) + u"Мб" )
+		filelist = get_material_files(i[0])
+		for j in filelist:
+			html = u"""<a href="%s">%s</a>%s Байт""" % (j[0], j[1], j[2] )
+			table += gen_table_row( u"Файлы", html )
 
 		table += "</table>"
 		table += insert_edit_delete_btn(i[0], "delete_material")
