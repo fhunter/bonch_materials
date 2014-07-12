@@ -42,10 +42,16 @@ material_edit = header_include + menu_include + u"""
 	    Описание:
 	    <textarea name="material_description">%s</textarea><br>
 	    Владелец: %s<br>
+	    Авторы: %s<br>
 	    Файлы:<br>
 	    %s
-	    <br>
+	    <br>Приложить файл
 	    <input type="file" name="attach"  /><br>
+	    Принадлежность: <br>
+	    %s
+	    <br>
+	    Добавить принадлежность:
+	    <br>
 	    <input type=submit value="Обновить">
 	  </form>
 	  </div>
@@ -57,6 +63,29 @@ material_edit = header_include + menu_include + u"""
 def get_materials():
 	result = db_exec_sql("select uuid, name,description,owner, upload_date, edit_date from materials")
 	return result
+
+def get_belongs_string(uuid, editdelete = False):
+	belongs = get_belongs(uuid)
+	if belongs != []:
+		belongs1 = []
+		belongs_string = "<table><tr>"
+		for j in [ u"Специальность", u"Год", u"Форма обучения", u"Дисциплина", u"Семестр" ]:
+			belongs_string += "<td class=field_name>%s</td>" % j
+		if editdelete:
+			belongs_string += "<td></td>"
+		belongs_string += "</tr>"
+		for j in belongs:
+			element = (get_speciality_by_uuid(j[1])[0][0],j[2],get_study_form_by_uuid(j[3])[0][0],get_discipline_by_uuid(j[4])[0][0],get_discipline_by_uuid(j[4])[0][1])
+			belongs_string += "<tr>"
+			for i in element:
+				belongs_string += "<td class=field_value>%s</td>" % i
+			if editdelete:
+				belongs_string += "<td>%s</td>" % j[0]
+			belongs_string += "</tr>"
+		belongs_string += "</table>"
+		return belongs_string
+	else:
+		return ""
 
 def add_material(form):
 	if ("material_name" in form):
@@ -116,7 +145,13 @@ def edit_material(form):
 					html = u"""<a href="%s/%s">%s</a>""" % ( path, j, j,)
 					filedata += gen_table_row( u"Файлы", html + u" " + unicode(os.path.getsize(path + "/" + j)/(1024*1024)) + u"Мб" )
 		filedata += "</table>"
-		page = material_edit % (material[0],material[1],material[4],material[5],material[2],material[3],filedata)
+		authorship_string = ""
+		tmp = get_authorship(uuid)
+		for j in tmp:
+			authorship_string += gen_table_row( u"Автор", j[1])
+		authorship_string = "<table>%s</table>" % authorship_string
+		belongs_string = get_belongs_string(uuid, True)
+		page = material_edit % (material[0],material[1],material[4],material[5],material[2],material[3],authorship_string,filedata, belongs_string)
 		print_ui(page )
 		exit(0)
 
@@ -144,15 +179,8 @@ def material_showui(form):
 			table += gen_table_row( u"Автор", j[1])
 		table += gen_table_row_wide( u"Описание", i[2])
 
-		belongs = get_belongs(i[0])
-		if belongs != []:
-			belongs_string = ""
-			#id integer primary key, speciality_uuid, student_year numeric, study_form_uuid, discipline_uuid
-			belongs1 = []
-			for j in belongs:
-				element = (j[0], get_speciality_by_uuid(j[1])[0][0],j[2],get_study_form_by_uuid(j[3])[0][0],get_discipline_by_uuid(j[4])[0][0],get_discipline_by_uuid(j[4])[0][1])
-				belongs1.append(element)
-			belongs_string += gen_table(belongs1,[ u"Специальность", u"Год", u"Форма обучения", u"Дисциплина", u"Семестр" ], [False, False, False, False, False,],False, False)
+		belongs_string = get_belongs_string(i[0],False)
+		if belongs_string !="":
 			table += gen_table_row(u"Принадлежность", belongs_string)
 
 		path = 'materials' + i[0].replace('{','/').replace('}','')
