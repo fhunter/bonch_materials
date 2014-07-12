@@ -40,19 +40,19 @@ def print_ui(page):
 def insert_edit_delete_btn(uuid, func_name):
 	text =  u""
 	text += u"""
-	<div class="edit_button">
+	<div class="edit_delete_button"><table><tr><td>
 		<form action="" method="post">
 			<input type="hidden" name="uuid" value="%s"/>
 			<input type="hidden" name="action" value="edit"/>
 			<input type=submit value="Редактировать"/>
 		</form>
-	</div>
-	<div class="delete_button">
+		</td><td>
 		<form action="" method="post">
 			<input type="hidden" name="uuid" value="%s"/>
 			<input type="hidden" name="action" value="delete"/>
 			<input type=submit value="Удалить"/>
 		</form>
+		</tr></table>
 	</div>
 	""" % (uuid, uuid)
   	return text
