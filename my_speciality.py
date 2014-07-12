@@ -31,7 +31,7 @@ speciality_page=header_include + menu_include + u"""
 speciality_edit = header_include + menu_include + u"""
       <div id="UI_elements">
 	<div id="material_admin" class="UI_tab" >
-	  <h2>Редактирование автора</h2>
+	  <h2>Редактирование специальности</h2>
 	  <div class="add_form">
 	  <form id="study_form_edit_form" method="post" action="">
 	    <input type="hidden" name="action" value="update"/>
