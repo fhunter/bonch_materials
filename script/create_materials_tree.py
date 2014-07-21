@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# vim: set fileencoding=utf-8 :
 import os
 import sqlite3
 #import subprocess
@@ -58,9 +59,51 @@ conn.close()
 #print authorship
 #print belongs
 #print materials_basepath
-for i in ["/raw","/by_author","/by_speciality","/by_year"]:
+def makesetofdirs(basepath,dirset):
+	for i in dirset:
+		try:
+			os.mkdir(basepath + "/" + i)
+		except:
+			pass
+
+makesetofdirs(path,["raw","by_author","by_speciality","by_year", "by_discipline", "by_studyform"])
+os.system("rsync -arcp --delete %s %s" % (materials_basepath + "/", path + "/raw/"))
+
+#По автору
+list1=[]
+for i in belongs:
+	for j in authorship:
+		if j[2] == i[1]:
+			for k in authors:
+				if k[1]==j[1]:
+					list1.append(k[2])
+makesetofdirs(path + "/by_author",list1)
+
+#by_speciality
+list1=[]
+for i in belongs:
+	for j in speciality:
+		if i[2] == j[1]:
+			list1.append(j[2]+"-"+j[3])
+makesetofdirs(path + "/by_speciality",list1)
+
+#by_year
+list1=[]
+for i in belongs:
+	list1.append(str(i[3]))
+makesetofdirs(path + "/by_year/",list1)
+
+#by_discipline
+list1=[]
+for i in discipline:
 	try:
-		os.mkdir(path + i)
+		os.mkdir(path + "/by_discipline/" + i[2]+"-"+str(i[4]))
 	except:
 		pass
-os.system("rsync -arcp --delete %s %s" % (materials_basepath + "/", path + "/raw/"))
+#by_studyform
+list1=[]
+for i in belongs:
+	for j in study_form:
+		if i[4]==j[1]:
+			list1.append(j[2])
+makesetofdirs(path + "/by_studyform",list1)
