@@ -25,8 +25,9 @@ def strip_uuid(uuid):
 
 materials_basepath  = os.path.abspath(sys.argv[0])
 materials_basepath  = os.path.dirname(materials_basepath)
-materials_basepath  = os.path.abspath(materials_basepath + "/../materials")
+materials_basepath  = os.path.abspath(materials_basepath + "/../materials/")
 
+os.system("rsync -avrp --partial "+materials_basepath + " " + path+"/raw");
 #rsync -avrp ./materials/ /tmp/2/raw
 
 def mkdir(base,pathlist):
@@ -44,7 +45,6 @@ def tostring(pathlist):
 	return path
 
 def link(path1,path2):
-	print "ln -s %s %s" % (path1, path2) 
 	try:
 		os.symlink(path1,path2)
 	except:
