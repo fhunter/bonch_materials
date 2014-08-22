@@ -25,8 +25,12 @@ def strip_uuid(uuid):
 
 materials_basepath  = os.path.abspath(sys.argv[0])
 materials_basepath  = os.path.dirname(materials_basepath)
-materials_basepath  = os.path.abspath(materials_basepath + "/../materials/")
+materials_basepath  = os.path.abspath(materials_basepath + "/../materials")
 
+try:
+	os.mkdir(path + "/raw/")
+except:
+	pass
 os.system("rsync -avrp --partial "+materials_basepath + " " + path+"/raw");
 #rsync -avrp ./materials/ /tmp/2/raw
 
@@ -59,6 +63,6 @@ for i in results:
 	cursor.execute("select authors.fio from authors,authorship where authors.uuid == authorship.author_uuid and authorship.material_uuid == ?",(material_uuid,))
 	for j in cursor.fetchall():
 		mkdir(path, (study_form, speciality_code + "_" + speciality_name, u"Год обучения "+str(student_year), discipline, u"Семестр"+str(semester), j[0]))
-		link(path + "/raw/" + strip_uuid(material_uuid), path + "/" + tostring((study_form, speciality_code + "_" + speciality_name, u"Год обучения "+str(student_year), discipline, u"Семестр"+str(semester), j[0], materials_name)))
+		link(path + "/raw/materials/" + strip_uuid(material_uuid), path + "/" + tostring((study_form, speciality_code + "_" + speciality_name, u"Год обучения "+str(student_year), discipline, u"Семестр"+str(semester), j[0], materials_name)))
 		#Сделать здесь симлинк
 conn.close()

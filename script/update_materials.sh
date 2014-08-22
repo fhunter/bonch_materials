@@ -6,4 +6,4 @@ rm -rf "$1"
 mkdir -p "$1"
 /var/www/materials/script/create_materials_tree.py "$1"
 rsync --partial -avrp --delete "$1"/ "$2"
-
+chown -R root:materials "$2"
