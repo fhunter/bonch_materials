@@ -20,8 +20,8 @@ uipage_case = { "material": material_showui, "authors": authors_showui, "discipl
 
 form = cgi.FieldStorage()
 
-header_html()
 if "page" in form:
+	header_html()
 	page = form.getfirst("page","")
 	if page in uipage_case:
 		uipage_case[page](form)
@@ -30,6 +30,8 @@ if "page" in form:
 		uipage_case["material"](None)
 		exit(0)
 else:
-	uipage_case["material"](None)
+	print "Status:303"
+	print "Location: ./?page=material"
+	print ""
 	exit(0)
 
