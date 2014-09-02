@@ -78,11 +78,13 @@ def get_belongs_string(uuid, editdelete = False):
 def get_material_files(uuid):
 	result = []
 	uuid1 = uuid.replace('..','').replace('/','').replace('{','/').replace('}','')
-	path = 'materials' + uuid1
+	path = "materials" + uuid1
 	if os.path.isdir(path):
 		for j in os.listdir(path):
-			if os.path.isfile(path + "/" + j):
-				temp = (path+"/"+j, j, os.path.getsize(path + "/" + j),)
+			i = unicode(j.decode('utf-8'))
+			path1 = unicode(path + "/" + i)
+			if os.path.isfile(path1.encode('utf-8')):
+				temp = (path1, i, os.path.getsize(path1.encode('utf-8')),)
 				result.append(temp)
 	return result
 
