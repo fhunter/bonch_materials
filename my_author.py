@@ -3,29 +3,7 @@ import cgi
 from my_db import *
 from my_html import *
 
-authors_page=header_include + menu_include + u"""
-      <div id="UI_elements">
-	<div id="author_admin" class="UI_tab" >
-	  <h2>Управление списком авторов</h2>
-	  <div class="add_form">
-	  <form id="author_add_form" method="post" action="">
-	    <input type="hidden" name="action" value="add"/>
-	    <input name="authors_name">
-	    <input type=submit value="Добавить">
-	  </form>
-	  </div>
-	  <div class="refresh_button">
-	  <a href="./?authors=show">  <button>Обновить</button></a>
-	  </div>
-	  <div id="author_list" class="UI_list">
-	  %s
-	  </div>
-	</div>
-	</div>
-	</div>
-	"""
-
-authors_edit = header_include + menu_include + u"""
+authors_edit =  u"""
       <div id="UI_elements">
 	<div id="material_admin" class="UI_tab" >
 	  <h2>Редактирование автора</h2>
@@ -77,11 +55,4 @@ def update_authors(form):
 authors_case = { "edit": edit_authors, "delete": del_authors, "add": add_authors, "update": update_authors }
 
 def authors_showui(form):
-	if is_post():
-		action = form.getfirst("action","")
-		if action in authors_case:
-			authors_case[action](form)
-	result = get_authors()
 	table = gen_table(result, (u"ФИО автора",),(False,))
-	page = authors_page % (table, )
-	print_ui(page)

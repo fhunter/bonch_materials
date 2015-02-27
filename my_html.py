@@ -6,34 +6,6 @@ def is_post():
 		return True
 	return False
 
-def header_html():
-        print "Content-type: text/html"
-        print ""
-
-def header_txt():
-        print "Content-type: text/plain"
-        print ""
-
-def insert_edit_delete_btn(uuid, func_name):
-	text =  u""
-	text += u"""
-	<div class="edit_delete_button"><table><tr><td>
-		<form action="" method="post">
-			<input type="hidden" name="uuid" value="%s"/>
-			<input type="hidden" name="action" value="edit"/>
-			<input type=submit value="Редактировать"/>
-		</form>
-		</td><td>
-		<form action="" method="post">
-			<input type="hidden" name="uuid" value="%s"/>
-			<input type="hidden" name="action" value="delete"/>
-			<input type=submit value="Удалить"/>
-		</form>
-		</tr></table>
-	</div>
-	""" % (uuid, uuid)
-  	return text
-
 def gen_table_row(name, value ):
 	text = u"<tr><td class=field_name>%s</td><td class=field_value>%s</td></tr>" % (name, value, )
 	return text

@@ -3,32 +3,7 @@ import cgi
 from my_db import *
 from my_html import *
 
-discipline_page=header_include + menu_include + u"""
-      <div id="UI_elements">
-	<div id="discipline_admin" class="UI_tab" >
-	  <h2>Управление списком дисциплин</h2>
-	  <div class="add_form">
-	  <form id="discipline_add_form" method="post" action="">
-	    <input type="hidden" name="action" value="add"/>
-	    Название:<input name="discipline_name"><br>
-	    Семестр:<input name="discipline_semester"><br>
-	    Описание:<br>
-	    <textarea name="discipline_description"></textarea>
-	    <br>
-	    <input type=submit value="Добавить">
-	  </form>
-	  </div>
-	  <div class="refresh_button">
-	  <a href="./?discipline=show">  <button>Обновить</button></a>
-	  </div>
-	  <div id="discipline_list" class="UI_list">
-	  %s
-	  </div>
-	</div>
-	</div>
-	</div>
-	"""
-discipline_edit = header_include + menu_include + u"""
+discipline_edit = u"""
       <div id="UI_elements">
 	<div id="material_admin" class="UI_tab" >
 	  <h2>Редактирование дисциплины</h2>
@@ -95,12 +70,5 @@ def update_discipline(form):
 discipline_case = { "edit": edit_discipline, "delete": del_discipline, "add": add_discipline, "update": update_discipline }
 
 def discipline_showui(form):
-	if is_post():
-		action = form.getfirst("action","")
-		if action in discipline_case:
-			discipline_case[action](form)
-	result=get_discipline()
 	table = gen_table(result, (u"Название",u"Семестр",u"Описание"),(False,False,True))
-	page = discipline_page % (table, )
-	print_ui(page)
 

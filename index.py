@@ -7,35 +7,50 @@ import os
 import sys
 
 from my_db import *
+from my_study_form import *
+from my_speciality import *
+from my_discipline import *
+from my_author import *
+from my_material import *
 
 @route('/')
 @route('/materials')
 @view('materials')
 def materials():
-	return dict()
+	result=get_materials()
+	return dict(data = result)
 
 @route('/authors')
 @view('authors')
 def authors():
-	return dict()
+	result=get_authors()
+	return dict(data = result)
 
 @route('/discipline')
 @view('discipline')
 def discipline():
-	return dict()
+	result=get_discipline()
+	return dict(data = result)
 
 @route('/speciality')
 @view('speciality')
 def speciality():
-	return dict()
+	result=get_speciality()
+	return dict(data = result)
 
 @route('/study_form')
 @view('study_form')
 def study_form():
-	return dict()
+	result=get_study_form()
+	return dict(data = result)
 
 @route('/<filename:re:.*\.css>')
 def send_image(filename):
-    return static_file(filename, root='./files/', mimetype='text/css')
+	return static_file(filename, root='./files/', mimetype='text/css')
+
+@route('/materials/<filename:re:.*>')
+def send_image(filename):
+	#
+	return static_file(filename, root='./')
 
 bottle.run(server=bottle.CGIServer) 

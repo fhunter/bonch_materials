@@ -3,32 +3,7 @@ import cgi
 from my_db import *
 from my_html import *
 
-speciality_page=header_include + menu_include + u"""
-      <div id="UI_elements">
-	<div id="speciality_admin" class="UI_tab" >
-	  <h2>Управление списком специальностей</h2>
-	  <div class="add_form">
-	  <form id="speciality_add_form" method="post" action="">
-	    <input type="hidden" name="action" value="add"/>
-	    Шифр:<input name="speciality_code"><br>
-	    Название:<input name="speciality_name"><br>
-	    Описание<br>
-	    <textarea name="speciality_description"></textarea><br>
-	    <input type=submit value="Добавить">
-	  </form>
-	  </div>
-	  <div class="refresh_button">
-	  <a href="./?speciality=show">  <button>Обновить</button></a>
-	  </div>
-	  <div id="speciality_list" class="UI_list">
-	  %s
-	  </div>
-	</div>
-	</div>
-	</div>
-	"""
-
-speciality_edit = header_include + menu_include + u"""
+speciality_edit = u"""
       <div id="UI_elements">
 	<div id="material_admin" class="UI_tab" >
 	  <h2>Редактирование специальности</h2>
@@ -96,11 +71,6 @@ def update_speciality(form):
 speciality_case = { "edit": edit_speciality, "delete": del_speciality, "add": add_speciality, "update": update_speciality }
 
 def speciality_showui(form):
-	if is_post():
-		action = form.getfirst("action","")
-		if action in speciality_case:
-			speciality_case[action](form)
 	result=get_speciality()
 	table = gen_table(result, (u"Шифр",u"Название",u"Описание"),(False,False,True))
 	page = speciality_page % (table, )
-	print_ui(page)

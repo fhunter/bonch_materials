@@ -7,29 +7,7 @@ from my_study_form import get_study_form_by_uuid,get_study_form
 from my_discipline import get_discipline_by_uuid,get_discipline
 from my_author import get_authors
 
-material_page= header_include + menu_include + u"""
-      <div id="UI_elements">
-	<div id="material_admin" class="UI_tab" >
-	  <h2>Учебные материалы, список</h2>
-	  <div class="add_form">
-	  <form id="material_add_form" method="post" action="">
-	    <input type="hidden" name="action" value="add"/>
-	    <input name="material_name">
-	    <input type=submit value="Добавить">
-	  </form>
-	  </div>
-	  <div class="refresh_button">
-	  <a href="./?page=material">  <button>Обновить</button></a>
-	  </div>
-	  <div id="material_list" class="UI_list">
-	  %s
-	  </div>
-	</div>
-	</div>
-	</div>
-	"""
-
-material_edit = header_include + menu_include + u"""
+material_edit = u"""
       <div id="UI_elements">
 	<div id="material_admin" class="UI_tab" >
 	  <h2>Редактирование учебного материала</h2>
@@ -236,8 +214,6 @@ def material_showui(form):
 		table += "</table>"
 		table += insert_edit_delete_btn(i[0], "delete_material")
 		table += "</div>"
-	page = material_page % (table, )
-	print_ui(page )
 
 
 def get_authorship(uuid):
