@@ -36,12 +36,53 @@ def discipline():
 	result=get_discipline()
 	return dict(data = result, headers = (u"Название",u"Семестр",u"Описание"), width = (False,False,True))
 
+#Speciality
 @route('/speciality')
 @view('speciality')
 def speciality():
 	result=get_speciality()
 	return dict(data = result, headers = (u"Шифр",u"Название",u"Описание"), width=(False,False,True))
 
+@route('/speciality/delete/<uuid>')
+def speciality_delete(uuid):
+	db_exec_sql("delete from speciality where uuid = ?", (uuid,))
+	redirect("../../speciality")
+
+@route('/speciality/edit/<uuid>')
+@view('speciality_edit')
+def speciality_edit(uuid):
+	speciality = db_exec_sql("select uuid, name, code, description from speciality where uuid = ?", (uuid,))[0]
+	return dict(uuid = speciality[0], name = speciality[1], code = speciality[2], description = speciality[3])
+
+@route('/speciality/edit/<uuid>',method='POST')
+@view('speciality_edit')
+def speciality_edit_post(uuid):
+	name = request.forms.get("speciality_name", None)
+	code = request.forms.get("speciality_code", None)
+	description = request.forms.get("speciality_description", None)
+	if name:
+		db_exec_sql("update speciality set name= ? where uuid = ?", (name.decode('utf-8'), uuid,))
+	if code:
+		db_exec_sql("update speciality set code= ? where uuid = ?", (code.decode('utf-8'), uuid,))
+	if description:
+		db_exec_sql("update speciality set description= ? where uuid = ?", (description.decode('utf-8'), uuid,))
+	redirect("../../speciality")
+
+@route('/speciality/add')
+@view('speciality_edit')
+def speciality_add():
+	return dict(name = "", code = "", description = "", action = "add", uuid = "", button = "Добавить")
+
+@route('/speciality/add', method='POST')
+def speciality_add_post():
+	name = request.forms.get("speciality_name", None)
+	code = request.forms.get("speciality_code", None)
+	description = request.forms.get("speciality_description", None)
+	if name and code:
+		db_exec_sql("insert into speciality (uuid, name, code, description) select *, ?, ?, ? from next_uuid", (str(name).decode('utf-8'),str(code).decode('utf-8'),str(description).decode('utf-8'),))
+	redirect("../speciality")
+
+#Study form
 @route('/study_form')
 @view('study_form')
 def study_form():

@@ -1,3 +1,4 @@
+%setdefault('button', 'Отредактировать')
 %include header
       <div id="UI_elements">
 	<div id="material_admin" class="UI_tab" >
@@ -5,12 +6,12 @@
 	  <div class="add_form">
 	  <form id="study_form_edit_form" method="post" action="">
 	    <input type="hidden" name="action" value="update"/>
-	    <input type="hidden" name="uuid" value="%s"/>
-	    Шифр:<input name="speciality_code" value="%s"><br>
-	    Название:<input name="speciality_name" value="%s"><br>
+	    <input type="hidden" name="uuid" value="{{uuid}}"/>
+	    Шифр:<input name="speciality_code" value="{{code}}"><br>
+	    Название:<input name="speciality_name" value="{{name}}"><br>
 	    Описание<br>
-	    <textarea name="speciality_description">%s</textarea><br>
-	    <input type=submit value="Отредактировать">
+	    <textarea name="speciality_description">{{description}}</textarea><br>
+	    <input type=submit value="{{button}}">
 	  </form>
 	  </div>
 	</div>
