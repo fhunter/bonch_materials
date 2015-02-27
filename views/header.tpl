@@ -1,6 +1,9 @@
-<html><head><meta http-equiv="Content-Type" content="text/html;charset=utf8">
-<title>Система управления учебными материалами</title>
-<link rel="stylesheet" type="text/css" href="style.css" />
+<html>
+<head>
+	<base href="http://172.16.64.10/materials1/" >
+	<meta http-equiv="Content-Type" content="text/html;charset=utf8">
+	<title>Система управления учебными материалами</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
     <div id="container">

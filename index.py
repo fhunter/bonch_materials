@@ -34,4 +34,8 @@ def speciality():
 def study_form():
 	return dict()
 
+@route('/<filename:re:.*\.css>')
+def send_image(filename):
+    return static_file(filename, root='./files/', mimetype='text/css')
+
 bottle.run(server=bottle.CGIServer) 
