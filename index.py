@@ -20,6 +20,7 @@ def materials():
 	result=get_materials()
 	return dict(data = result)
 
+#Authors
 @route('/authors')
 @view('authors')
 def authors():
@@ -27,8 +28,36 @@ def authors():
 	return dict(data = result, headers = (u"ФИО автора",), width = (False,))
 
 @route('/authors/delete/<uuid>')
-def author_delete(uuid):
+def authors_delete(uuid):
+	db_exec_sql("delete from authors where uuid = ?", (uuid,))
 	redirect("../../authors")
+
+@route('/authors/edit/<uuid>')
+@view('authors_edit')
+def authors_edit(uuid):
+	author = db_exec_sql("select uuid, fio from authors where uuid = ?", (uuid,))
+	author= author[0]
+	return dict(uuid = author[0], fio = author[1])
+
+@route('/authors/edit/<uuid>',method='POST')
+@view('authors_edit')
+def authors_edit_post(uuid):
+	name = request.forms.get("authors_name", None)
+	if name:
+		db_exec_sql("update authors set fio= ? where uuid = ?", (name.decode('utf-8'), uuid,))
+	redirect("../../authors")
+
+@route('/authors/add')
+@view('authors_edit')
+def authors_add():
+	return dict(fio = "", action = "add", uuid = "", button = "Добавить")
+
+@route('/authors/add', method='POST')
+def authors_add_post():
+	authors_name = request.forms.get("authors_name", None)
+	if authors_name:
+		db_exec_sql("insert into authors (uuid, fio) select *, ? from next_uuid", (str(authors_name).decode('utf-8'),))
+	redirect("../authors")
 
 #Discipline
 @route('/discipline')
