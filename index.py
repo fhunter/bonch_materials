@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # vim: set fileencoding=utf-8 :
 import bottle
-from bottle import route, view, request, template, static_file, response, abort
+from bottle import route, view, request, template, static_file, response, abort, redirect
 import sqlite3
 import os
 import sys
@@ -28,7 +28,7 @@ def authors():
 
 @route('/authors/delete/<uuid>')
 def author_delete(uuid):
-	return ""
+	redirect("../../authors")
 
 @route('/discipline')
 @view('discipline')
@@ -50,19 +50,22 @@ def study_form():
 
 @route('/study_form/delete/<uuid>')
 def study_form_delete(uuid):
-	return ""
+	redirect("../../study_form")
 
 @route('/study_form/edit/<uuid>')
+@view('study_form_edit')
 def study_form_edit(uuid):
 	return ""
 
 @route('/study_form/edit/<uuid>',method='POST')
+@view('study_form_edit')
 def study_form_edit_post(uuid):
 	return ""
 
-@route('/study_form/add')
+@route('/study_form/add', method='POST')
+@view('study_form_edit')
 def study_form_add():
-	return ""
+	return dict(name = "", action = "add", uuid = "", button = "Добавить")
 
 
 #This is access for our css file

@@ -14,7 +14,7 @@
 		</div>
 		%include refresh_btn action="./speciality"
 		<div id="speciality_list" class="UI_list">
-      		%include table headers = headers, width= width, data = data, editable = True
+      		%include table headers = headers, width= width, data = data, editable = True, action = "./speciality"
 		</div>
 	</div>
 </div>

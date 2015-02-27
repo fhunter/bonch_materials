@@ -14,7 +14,7 @@
 	%end
 	</table>
 	%if defined('editable'):
-	%include edit_delete_btns uuid = uuid, action = ""
+	%include edit_delete_btns uuid = uuid, action = action
 	%end
 	</div>
 %end
