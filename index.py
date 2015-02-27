@@ -50,22 +50,36 @@ def study_form():
 
 @route('/study_form/delete/<uuid>')
 def study_form_delete(uuid):
+	db_exec_sql("delete from study_form where uuid = ?", (uuid,))
 	redirect("../../study_form")
 
 @route('/study_form/edit/<uuid>')
 @view('study_form_edit')
 def study_form_edit(uuid):
-	return ""
+	material = db_exec_sql("select uuid, study_form from study_form where uuid = ?", (uuid,))
+	material= material[0]
+	return dict(uuid = material[0], name = material[1])
 
 @route('/study_form/edit/<uuid>',method='POST')
 @view('study_form_edit')
 def study_form_edit_post(uuid):
-	return ""
+	new_name = request.forms.get("study_form_name", None)
+	if new_name:
+		name = new_name
+		db_exec_sql("update study_form set study_form= ? where uuid = ?", (name.decode('utf-8'), uuid,))
+	redirect("../../study_form")
 
-@route('/study_form/add', method='POST')
+@route('/study_form/add')
 @view('study_form_edit')
 def study_form_add():
 	return dict(name = "", action = "add", uuid = "", button = "Добавить")
+
+@route('/study_form/add', method='POST')
+def study_form_add_post():
+	name = request.forms.get("study_form_name", None)
+	if name:
+		db_exec_sql("insert into study_form (uuid, study_form) select *, ? from next_uuid", (str(name).decode('utf-8'),))
+	redirect("../study_form")
 
 
 #This is access for our css file

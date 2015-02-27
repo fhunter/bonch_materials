@@ -1,3 +1,4 @@
+%setdefault('button', 'Отредактировать')
 %include header
       <div id="UI_elements">
 	<div id="material_admin" class="UI_tab" >
