@@ -1,37 +1,37 @@
 #!/usr/bin/python
 # vim: set fileencoding=utf-8 :
-import cgi
-import cgitb
+import bottle
+from bottle import route, view, request, template, static_file, response, abort
 import sqlite3
 import os
 import sys
-cgitb.enable()
 
 from my_db import *
-from my_html import *
-from my_speciality import *
-from my_author import *
-from my_study_form import *
-from my_discipline import *
-from my_material import *
 
-uipage_case = { "material": material_showui, "authors": authors_showui, "discipline": discipline_showui, "speciality": speciality_showui, "study_form": study_form_showui }
+@route('/')
+@route('/materials')
+@view('materials')
+def materials():
+	return dict()
 
+@route('/authors')
+@view('authors')
+def authors():
+	return dict()
 
-form = cgi.FieldStorage()
+@route('/discipline')
+@view('discipline')
+def discipline():
+	return dict()
 
-if "page" in form:
-	header_html()
-	page = form.getfirst("page","")
-	if page in uipage_case:
-		uipage_case[page](form)
-		exit(0)
-	else:
-		uipage_case["material"](None)
-		exit(0)
-else:
-	print "Status:303"
-	print "Location: ./?page=material"
-	print ""
-	exit(0)
+@route('/speciality')
+@view('speciality')
+def speciality():
+	return dict()
 
+@route('/study_form')
+@view('study_form')
+def study_form():
+	return dict()
+
+bottle.run(server=bottle.CGIServer) 

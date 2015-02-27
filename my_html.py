@@ -1,23 +1,6 @@
 # vim: set fileencoding=utf-8 :
 import os
 
-header_include= u"""
-    <div id="container">
-      <div id="header">
-	<h1>Система управления учебными материалами</h1>
-      </div>
-"""
-
-menu_include = u"""
-      <div id="menu">
-	<a href="./?page=material">  <button>Материалы</button></a>
-	<a href="./?page=authors">   <button>Авторы</button></a>
-	<a href="./?page=discipline"><button>Дисциплины</button></a>
-	<a href="./?page=speciality"><button>Специальности</button></a>
-	<a href="./?page=study_form"><button>Формы обучения</button></a>
-      </div>
-"""
-
 def is_post():
 	if os.environ['REQUEST_METHOD'] == 'POST':
 		return True
@@ -30,12 +13,6 @@ def header_html():
 def header_txt():
         print "Content-type: text/plain"
         print ""
-
-def print_ui(page):
-        print """<html><head><meta http-equiv="Content-Type" content="text/html;charset=utf8"></head><body>
-	<link rel="stylesheet" type="text/css" href="style.css" /><title>Система управления учебными материалами</title>"""
-        print page.encode('utf-8')
-	print """</body></html>"""
 
 def insert_edit_delete_btn(uuid, func_name):
 	text =  u""
