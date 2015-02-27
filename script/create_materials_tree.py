@@ -31,7 +31,7 @@ try:
 	os.mkdir(path + "/raw/")
 except:
 	pass
-os.system("rsync -avrp --partial "+materials_basepath + " " + path+"/raw");
+os.system("rsync -avrp --partial -q "+materials_basepath + " " + path+"/raw");
 #rsync -avrp ./materials/ /tmp/2/raw
 
 def mkdir(base,pathlist):
