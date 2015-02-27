@@ -13,9 +13,7 @@
 	    <input type=submit value="Добавить">
 	  </form>
 	  </div>
-	  <div class="refresh_button">
-	  <a href="./discipline">  <button>Обновить</button></a>
-	  </div>
+	  %include refresh_btn action="./discipline"
 	  <div id="discipline_list" class="UI_list">
 	  <table border=1>
 	  %for i in data:

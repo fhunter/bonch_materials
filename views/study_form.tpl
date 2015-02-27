@@ -2,6 +2,7 @@
   <div id="UI_elements">
       <div id="study_form_admin" class="UI_tab" >
       <h2>Управление списком форм обучения</h2>
+      %include add_btn action=""
       <div class="add_form">
       <form id="study_form_add_form" method="post" action="">
 	<input type="hidden" name="action" value="add"/>
@@ -9,9 +10,7 @@
 	<input type=submit value="Добавить">
       </form>
       </div>
-      <div class="refresh_button">
-      <a href="./study_form"><button>Обновить</button></a>
-      </div>
+      %include refresh_btn action="./study_form"
       <div id="study_form_list" class="UI_list">
       <table>
       %for i in data:

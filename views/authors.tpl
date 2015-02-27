@@ -9,9 +9,7 @@
 	    <input type=submit value="Добавить">
 	  </form>
 	  </div>
-	  <div class="refresh_button">
-	  <a href="./?authors=show">  <button>Обновить</button></a>
-	  </div>
+	  %include refresh_btn action="./authors"
 	  <div id="author_list" class="UI_list">
 	  <table border=1>
 	  %for i in data:
