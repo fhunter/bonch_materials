@@ -15,18 +15,7 @@
 	  </div>
 	  %include refresh_btn action="./discipline"
 	  <div id="discipline_list" class="UI_list">
-	  <table border=1>
-	  %for i in data:
-	  	<tr>
-		<td>{{i[0]}}</td>
-		<td>{{i[1]}}</td>
-		<td>{{i[2]}}</td>
-		<td>{{i[3]}}</td>
-		<td>
-		%include edit_delete_btns action="", uuid=""
-		</tr>
-	  %end
-	  </table>
+      	  %include table headers = headers, width= width, data = data, editable = True
 	  </div>
 	</div>
 	</div>

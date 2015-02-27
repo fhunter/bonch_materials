@@ -1,7 +1,6 @@
 # vim: set fileencoding=utf-8 :
 import cgi
 from my_db import *
-from my_html import *
 
 study_form_edit = u"""
       <div id="UI_elements">
@@ -55,11 +54,5 @@ def update_study_form(form):
 		if "study_form_name" in form:
 			name= cgi.escape(form.getfirst("study_form_name",""))
 			db_exec_sql("update study_form set study_form= ? where uuid = ?", (name.decode('utf-8'), uuid,))
-
-def study_form_mainpage():
-	result=get_study_form()
-	table = gen_table(result, (u"Форма обучение",),(False,))
-	page = study_form_page % (table, )
-	print_ui(page)
 
 study_form_case = { "edit": edit_study_form, "delete": del_study_form, "add": add_study_form, "update": update_study_form, }

@@ -1,7 +1,6 @@
 # vim: set fileencoding=utf-8 :
 import cgi
 from my_db import *
-from my_html import *
 
 speciality_edit = u"""
       <div id="UI_elements">
@@ -69,8 +68,3 @@ def update_speciality(form):
 			db_exec_sql("update speciality set description= ? where uuid = ?", (description.decode('utf-8'), uuid,))
 
 speciality_case = { "edit": edit_speciality, "delete": del_speciality, "add": add_speciality, "update": update_speciality }
-
-def speciality_showui(form):
-	result=get_speciality()
-	table = gen_table(result, (u"Шифр",u"Название",u"Описание"),(False,False,True))
-	page = speciality_page % (table, )

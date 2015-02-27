@@ -1,7 +1,6 @@
 # vim: set fileencoding=utf-8 :
 import cgi
 from my_db import *
-from my_html import *
 from my_speciality import get_speciality_by_uuid,get_speciality
 from my_study_form import get_study_form_by_uuid,get_study_form
 from my_discipline import get_discipline_by_uuid,get_discipline

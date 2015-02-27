@@ -24,19 +24,19 @@ def materials():
 @view('authors')
 def authors():
 	result=get_authors()
-	return dict(data = result)
+	return dict(data = result, headers = (u"ФИО автора",), width = (False,))
 
 @route('/discipline')
 @view('discipline')
 def discipline():
 	result=get_discipline()
-	return dict(data = result)
+	return dict(data = result, headers = (u"Название",u"Семестр",u"Описание"), width = (False,False,True))
 
 @route('/speciality')
 @view('speciality')
 def speciality():
 	result=get_speciality()
-	return dict(data = result)
+	return dict(data = result, headers = (u"Шифр",u"Название",u"Описание"), width=(False,False,True))
 
 @route('/study_form')
 @view('study_form')

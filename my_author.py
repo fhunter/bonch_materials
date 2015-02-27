@@ -1,7 +1,6 @@
 # vim: set fileencoding=utf-8 :
 import cgi
 from my_db import *
-from my_html import *
 
 authors_edit =  u"""
       <div id="UI_elements">
@@ -53,6 +52,3 @@ def update_authors(form):
 			db_exec_sql("update authors set fio= ? where uuid = ?", (name.decode('utf-8'), uuid,))
 
 authors_case = { "edit": edit_authors, "delete": del_authors, "add": add_authors, "update": update_authors }
-
-def authors_showui(form):
-	table = gen_table(result, (u"ФИО автора",),(False,))
