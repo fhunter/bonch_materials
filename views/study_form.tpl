@@ -12,17 +12,7 @@
       </div>
       %include refresh_btn action="./study_form"
       <div id="study_form_list" class="UI_list">
-      <table>
-      %for i in data:
-      	<tr>
-		<td>{{i[0]}}</td>
-		<td>{{i[1]}}</td>
-		<td>
-		%include edit_delete_btns action = "", uuid = i[0]
-		</td>
-	</tr>
-      %end
-      </table>
+      %include table headers = headers, width= width, data = data, editable = True
       </div>
     </div>
 

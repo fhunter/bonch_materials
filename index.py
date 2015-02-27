@@ -42,7 +42,7 @@ def speciality():
 @view('study_form')
 def study_form():
 	result=get_study_form()
-	return dict(data = result)
+	return dict(data = result, headers = (u"Форма обучения",), width=(False,))
 
 @route('/<filename:re:.*\.css>')
 def send_image(filename):
