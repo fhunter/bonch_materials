@@ -30,11 +30,52 @@ def authors():
 def author_delete(uuid):
 	redirect("../../authors")
 
+#Discipline
 @route('/discipline')
 @view('discipline')
 def discipline():
 	result=get_discipline()
 	return dict(data = result, headers = (u"Название",u"Семестр",u"Описание"), width = (False,False,True))
+
+@route('/discipline/delete/<uuid>')
+def discipline_delete(uuid):
+	db_exec_sql("delete from discipline where uuid = ?", (uuid,))
+	redirect("../../discipline")
+
+@route('/discipline/edit/<uuid>')
+@view('discipline_edit')
+def discipline_edit(uuid):
+	discipline = db_exec_sql("select uuid, name, description,semester from discipline where uuid = ?", (uuid,))[0]
+	return dict(uuid = discipline[0], name = discipline[1], description = discipline[2], semester = discipline[3])
+
+@route('/discipline/edit/<uuid>',method='POST')
+@view('discipline_edit')
+def discipline_edit_post(uuid):
+	name = request.forms.get("discipline_name", None)
+	semester = request.forms.get("discipline_code", None)
+	description = request.forms.get("discipline_description", None)
+	if name:
+		db_exec_sql("update discipline set name= ? where uuid = ?", (name.decode('utf-8'), uuid,))
+	if semester:
+		db_exec_sql("update discipline set semester= ? where uuid = ?", (semester.decode('utf-8'), uuid,))
+	if description:
+		db_exec_sql("update discipline set description= ? where uuid = ?", (description.decode('utf-8'), uuid,))
+	redirect("../../discipline")
+
+@route('/discipline/add')
+@view('discipline_edit')
+def discipline_add():
+	return dict(name = "", semester = "", description = "", action = "add", uuid = "", button = "Добавить")
+
+@route('/discipline/add', method='POST')
+def discipline_add_post():
+	name = request.forms.get("discipline_name", None)
+	semester = request.forms.get("discipline_semester", None)
+	description = request.forms.get("discipline_description", None)
+	if name and semester:
+		db_exec_sql("insert into discipline (uuid, name, semester, description) select *, ?, ?, ? from next_uuid", (str(name).decode('utf-8'),str(semester).decode('utf-8'),str(description).decode('utf-8'),))
+	redirect("../discipline")
+
 
 #Speciality
 @route('/speciality')
