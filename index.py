@@ -13,12 +13,37 @@ from my_discipline import *
 from my_author import *
 from my_material import *
 
+#Materials
 @route('/')
 @route('/materials')
 @view('materials')
 def materials():
 	result=get_materials()
-	return dict(data = result)
+	return dict(data = result, headers = (u"Название",u"Дата заливки",u"Дата редактирования",u"Заливал",u"Автор"), width=(False,False,False,False,False),)
+
+@route('/materials/delete/<uuid>')
+def materials_delete(uuid):
+	redirect("../../materials")
+
+@route('/materials/edit/<uuid>')
+@view('materials_edit')
+def materials_edit(uuid):
+	return dict(uuid = "")
+
+@route('/materials/edit/<uuid>',method='POST')
+@view('materials_edit')
+def materials_edit_post(uuid):
+	#name = request.forms.get("materials_name", None)
+	redirect("../../materials")
+
+@route('/materials/add')
+@view('materials_edit')
+def materials_add():
+	return dict(action = "add", uuid = "", button = "Добавить")
+
+@route('/materials/add', method='POST')
+def materials_add_post():
+	redirect("../materials")
 
 #Authors
 @route('/authors')
