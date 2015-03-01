@@ -1,5 +1,6 @@
 # vim: set fileencoding=utf-8 :
 import cgi
+import os
 from my_db import *
 from my_speciality import get_speciality_by_uuid,get_speciality
 from my_study_form import get_study_form_by_uuid,get_study_form
@@ -7,8 +8,13 @@ from my_discipline import get_discipline_by_uuid,get_discipline
 from my_author import get_authors
 
 def get_materials():
+	#uuid, name, description, owner, upload_date, edit_date, ##authors, ##course_belongs, ##files
 	result = db_exec_sql("select uuid, name,description,owner, upload_date, edit_date from materials")
-	return result
+	result1 = []
+	for i in result:
+		uuid = i[0]
+		result1.append( i + (get_authorship(uuid), get_belongs(uuid), get_material_files(uuid),))
+	return result1
 
 def get_belongs_string(uuid, editdelete = False):
 	belongs = get_belongs(uuid)
@@ -52,16 +58,16 @@ def add_material(form):
 		owner = os.environ["REMOTE_USER"]
 		db_exec_sql("insert into materials (uuid, name, owner) select *, ?, ? from next_uuid", (str(name).decode('utf-8'), owner))
 
-def del_material(form):
-	if "uuid" in form:
-		uuid = cgi.escape(form.getfirst("uuid",""))
-		db_exec_sql("delete from materials where uuid = ?", (uuid,))
-		path = 'materials' + uuid.replace('{','/').replace('}','')
-		if os.path.isdir(path):
-			for j in os.listdir(path):
-				if os.path.isfile(path + "/" + j):
-					os.remove(path + "/" + j)
-			os.rmdir(path)
+#Keep this
+def del_material(uuid):
+	db_exec_sql("delete from materials where uuid = ?", (uuid,))
+	#TODO: need to delete belongs info
+	path = 'materials' + uuid.replace('{','/').replace('}','')
+	if os.path.isdir(path):
+		for j in os.listdir(path):
+			if os.path.isfile(path + "/" + j):
+				os.remove(path + "/" + j)
+		os.rmdir(path)
 
 def update_material(form):
 	if "uuid" in form:

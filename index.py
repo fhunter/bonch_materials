@@ -14,33 +14,53 @@ from my_author import *
 from my_material import *
 
 #Materials
+#TODO
 @route('/')
 @route('/materials')
 @view('materials')
 def materials():
 	result=get_materials()
-	return dict(data = result, headers = (u"Название",u"Дата заливки",u"Дата редактирования",u"Заливал",u"Автор"), width=(False,False,False,False,False),)
+	result1 = []
+	for i in result:
+		authors_table = template('table', data = i[6], 
+			headers = (u"ФИО",),
+			width = (False,))
+		belongs_table = template('table', data = i[7], 
+			headers = (u"","","",""),
+			width = (False,False,False,False),)
+		files_table =   template('table', data = i[8],
+			headers = (u"Имя","Размер",),
+			width = (False,False,),)
+		j = (i[0],i[1],i[2],i[3],i[4],i[5],authors_table,belongs_table,files_table)
+		result1.append(j)
+	#uuid, name, description, owner, upload_date, edit_date, authors, course_belongs, files
+	return dict(data = result1, headers = (u"Название",u"Описание",u"Владелец",u"Дата заливки",u"Дата редактирования",u"Авторы",u"Принадлежность",u"Файлы",), width=(False,True,False,False,False,False,False,False,),)
 
 @route('/materials/delete/<uuid>')
 def materials_delete(uuid):
+	del_material(uuid)
 	redirect("../../materials")
 
+#TODO
 @route('/materials/edit/<uuid>')
 @view('materials_edit')
 def materials_edit(uuid):
 	return dict(uuid = "")
 
+#TODO
 @route('/materials/edit/<uuid>',method='POST')
 @view('materials_edit')
 def materials_edit_post(uuid):
 	#name = request.forms.get("materials_name", None)
 	redirect("../../materials")
 
+#TODO
 @route('/materials/add')
 @view('materials_edit')
 def materials_add():
 	return dict(action = "add", uuid = "", button = "Добавить")
 
+#TODO
 @route('/materials/add', method='POST')
 def materials_add_post():
 	redirect("../materials")
