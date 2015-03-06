@@ -22,13 +22,13 @@ def materials():
 	result=get_materials()
 	result1 = []
 	for i in result:
-		authors_table = template('table', data = i[6], 
+		authors_table = template('vtable', data = i[6], 
 			headers = (u"ФИО",),
 			width = (False,))
-		belongs_table = template('table', data = i[7], 
-			headers = (u"","","",""),
-			width = (False,False,False,False),)
-		files_table =   template('table', data = i[8],
+		belongs_table = template('vtable', data = i[7], 
+			headers = (u"Специальность","Год","Форма обучения","Дисциплина","Семестр"),
+			width = (False,False,False,False,False),)
+		files_table =   template('vtable', data = i[8],
 			headers = (u"Имя","Размер",),
 			width = (False,False,),)
 		j = (i[0],i[1],i[2],i[3],i[4],i[5],authors_table,belongs_table,files_table)
@@ -45,7 +45,30 @@ def materials_delete(uuid):
 @route('/materials/edit/<uuid>')
 @view('materials_edit')
 def materials_edit(uuid):
-	return dict(uuid = "")
+	result=get_material(uuid)
+	result1 = []
+	authors_table = template('table', data = result[6], 
+		headers = (u"ФИО",),
+		width = (False,))
+	belongs_table = template('table', data = result[7], 
+		headers = (u"","","",""),
+		width = (False,False,False,False),)
+	files_table =   template('table', data = result[8],
+		headers = (u"Имя","Размер",),
+		width = (False,False,),)
+	j = (result[0],result[1],result[2],result[3],result[4],result[5],authors_table,belongs_table,files_table)
+	result1.append(j)
+	return dict(data = result1, headers = (u"Название",u"Описание",u"Владелец",u"Дата заливки",u"Дата редактирования",u"Авторы",u"Принадлежность",u"Файлы",), width=(False,True,False,False,False,False,False,False,), uuid = result[0])
+
+@route('/materials/edit/<uuid>/author/del/<uuida>')
+def materials_delete_author(uuid,uuida):
+	del_author(uuid,uuida)
+	redirect("../../../../../materials")
+
+@route('/materials/edit/<uuid>/author/add/<uuida>')
+def materials_delete_author(uuid,uuida):
+	add_author(uuid,uuida)
+	redirect("../../../../../materials")
 
 #TODO
 @route('/materials/edit/<uuid>',method='POST')

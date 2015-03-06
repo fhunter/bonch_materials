@@ -16,6 +16,12 @@ def get_materials():
 		result1.append( i + (get_authorship(uuid), get_belongs(uuid), get_material_files(uuid),))
 	return result1
 
+def get_material(uuid):
+	result = db_exec_sql("select uuid, name, description, owner, upload_date, edit_date from materials where uuid = ?", (uuid,))[0]
+	uuid = result[0]
+	result1 = result + (get_authorship(uuid), get_belongs(uuid), get_material_files(uuid),)
+	return result1
+
 def get_belongs_string(uuid, editdelete = False):
 	belongs = get_belongs(uuid)
 	if belongs != []:
@@ -69,11 +75,16 @@ def del_material(uuid):
 				os.remove(path + "/" + j)
 		os.rmdir(path)
 
+def del_author(uuid,uuid_author):
+	db_exec_sql("delete from authorship where author_uuid = ? and material_uuid = ?", (uuid_author, uuid))
+
+def add_author(uuid,uuid_author):
+	db_exec_sql("insert into authorship (author_uuid, material_uuid) values (?, ?)", (uuid_author, uuid))
+
 def update_material(form):
 	if "uuid" in form:
 		uuid = cgi.escape(form.getfirst("uuid",""))
-		material = db_exec_sql("select uuid, name, description, owner, upload_date, edit_date from materials where uuid = ?", (uuid,))
-		material= material[0]
+		material = db_exec_sql("select uuid, name, description, owner, upload_date, edit_date from materials where uuid = ?", (uuid,))[0]
 		name = material[1]
 		description = material[2]
 		if "material_name" in form:
@@ -82,10 +93,6 @@ def update_material(form):
 		if "material_description" in form:
 			description = cgi.escape(form.getfirst("material_description",""))
 			db_exec_sql("update materials set description= ?, edit_date = (datetime()) where uuid = ?", (description.decode('utf-8'), uuid,))
-		if "del_author" in form:
-			authors_to_delete = form.getlist("del_author")
-			for author in authors_to_delete:
-				db_exec_sql("delete from authorship where author_uuid = ? and material_uuid = ?", (author, uuid))
 		if "del_file" in form:
 			files_to_delete = form.getlist("del_file")
 			for filestodel in files_to_delete:
@@ -95,10 +102,6 @@ def update_material(form):
 			belongs_to_delete = form.getlist("del_belongs")
 			for belongsdel in belongs_to_delete:
 				db_exec_sql("delete from belongs where id = ?", (belongsdel,))
-		if "author" in form:
-			author = cgi.escape(form.getfirst("author",""))
-			if author != "1":
-				db_exec_sql("insert into authorship (author_uuid, material_uuid) values (?, ?)", (author, uuid))
 		if ("speciality" in form) and ("year" in form) and ("study_form" in form) and ("discipline" in form):
 			speciality = cgi.escape(form.getfirst("speciality",""))	
 			year       = cgi.escape(form.getfirst("year",""))	
@@ -164,30 +167,11 @@ def edit_material(form):
 		print_ui(page )
 		exit(0)
 
-material_case = { "edit": edit_material, "delete": del_material, "add": add_material, "update": update_material }
-
 def material_showui(form):
-	if is_post():
-		action = form.getfirst("action","")
-		if action in material_case:
-			material_case[action](form)
 	result=get_materials()
 	table = u""
 	for i in result:
 		table += """<div class="list_element">"""
-		table += "<table>"
-		table += gen_table_row( u"Название" , i[1])
-		table += gen_table_row( u"Дата заливки" , i[4])
-		if i[5] == None:
-			table += gen_table_row( u"Дата редактирования" , u"Никогда")
-		else:
-			table += gen_table_row( u"Дата редактирования" , i[5])
-		table += gen_table_row( u"Заливал", i[3])
-		tmp = get_authorship(i[0])
-		for j in tmp:
-			table += gen_table_row( u"Автор", j[1])
-		table += gen_table_row_wide( u"Описание", i[2])
-
 		belongs_string = get_belongs_string(i[0],False)
 		if belongs_string !="":
 			table += gen_table_row(u"Принадлежность", belongs_string)
@@ -197,8 +181,6 @@ def material_showui(form):
 			html = u"""<a href="%s">%s</a>%s Байт""" % (j[0], j[1], j[2] )
 			table += gen_table_row( u"Файлы", html )
 
-		table += "</table>"
-		table += insert_edit_delete_btn(i[0], "delete_material")
 		table += "</div>"
 
 
@@ -207,5 +189,5 @@ def get_authorship(uuid):
 	return result
 
 def get_belongs(uuid):
-	result = db_exec_sql("select id,speciality_uuid, student_year, study_form_uuid, discipline_uuid from belongs where material_uuid = ?", (uuid, ))
+	result = db_exec_sql("select id,id,speciality_uuid, student_year, study_form_uuid, discipline_uuid from belongs where material_uuid = ?", (uuid, ))
 	return result
