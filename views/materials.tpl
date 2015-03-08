@@ -5,7 +5,7 @@
 	  %include add_btn action="./materials/add"
 	  %include refresh_btn action="./materials"
 	  <div id="material_list" class="UI_list">
-          %include table headers = headers, width= width, data = data, editable = True, action = "./materials/"
+          %include table headers = headers, width= width, data = data, editable = [True,True], action = "./materials/"
 	  </div>
 	</div>
 	</div>

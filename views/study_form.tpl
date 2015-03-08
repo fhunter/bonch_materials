@@ -5,7 +5,7 @@
       %include add_btn action="./study_form/add"
       %include refresh_btn action="./study_form"
       <div id="study_form_list" class="UI_list">
-      %include table headers = headers, width= width, data = data, editable = True, action="./study_form/"
+      %include table headers = headers, width= width, data = data, editable = [True, True], action="./study_form/"
       </div>
     </div>
 

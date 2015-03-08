@@ -18,7 +18,7 @@
 	%end
 	<td>
 	%if defined('editable'):
-	%include edit_delete_btns uuid = uuid, action = action
+	%include edit_delete_btns uuid = uuid, action = action, editdelete = editable
 	%end
 	</td>
 	</tr>

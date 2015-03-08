@@ -47,13 +47,13 @@ def materials_delete(uuid):
 def materials_edit(uuid):
 	result=get_material(uuid)
 	result1 = []
-	authors_table = template('table', data = result[6], 
+	authors_table = template('vtable', data = result[6], 
 		headers = (u"ФИО",),
 		width = (False,))
-	belongs_table = template('table', data = result[7], 
-		headers = (u"","","",""),
-		width = (False,False,False,False),)
-	files_table =   template('table', data = result[8],
+	belongs_table = template('vtable', data = result[7], 
+		headers = (u"Специальность","Год","Форма обучения","Дисциплина","Семестр"),
+		width = (False,False,False,False,False),)
+	files_table =   template('vtable', data = result[8],
 		headers = (u"Имя","Размер",),
 		width = (False,False,),)
 	j = (result[0],result[1],result[2],result[3],result[4],result[5],authors_table,belongs_table,files_table)
@@ -81,7 +81,7 @@ def materials_edit_post(uuid):
 @route('/materials/add')
 @view('materials_edit')
 def materials_add():
-	return dict(action = "add", uuid = "", button = "Добавить")
+	return dict(action = "add", uuid = "", button = "Добавить",)
 
 #TODO
 @route('/materials/add', method='POST')
